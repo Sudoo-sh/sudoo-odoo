@@ -10,6 +10,7 @@
 <p align="center">
   <a href="https://github.com/Sudoo-sh/sudoo-odoo/actions/workflows/ci.yml?query=branch%3A19.0"><img alt="CI" src="https://github.com/Sudoo-sh/sudoo-odoo/actions/workflows/ci.yml/badge.svg?branch=19.0"></a>
   <img alt="Odoo 17.0 | 18.0 | 19.0 | 20.0" src="https://img.shields.io/badge/Odoo-17.0%20%7C%2018.0%20%7C%2019.0%20%7C%2020.0-714B67">
+  <a href="https://apps.odoo.com/apps/modules/19.0/sudoo_base"><img alt="Odoo Apps store" src="https://img.shields.io/badge/Odoo%20Apps-get%20it%20free-714B67"></a>
   <a href="LICENSE"><img alt="License: OPL-1" src="https://img.shields.io/badge/license-OPL--1-4A2F43"></a>
   <img alt="Price: free" src="https://img.shields.io/badge/price-free-2F6B4F">
   <img alt="Languages: English, Arabic" src="https://img.shields.io/badge/languages-English%20%7C%20%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-5E5560">
@@ -36,12 +37,12 @@
 
 Install only what you need; each app installs the Instance Manager (`sudoo_base`) with it.
 
-| App | Technical name | Adds | Needs |
+| App (on the store) | Technical name | Adds | Needs |
 | :--- | :--- | :--- | :--- |
-| **Sudoo.sh Instance Manager** | `sudoo_base` | Panels, what users may create, the instance list, the **New instance** wizard, Start, Pause, Restart, Back up, Extend, Delete | nothing |
-| **Sudoo.sh Helpdesk Tests** | `sudoo_helpdesk` | A **Test instance** button on tickets | Helpdesk (Odoo Enterprise) |
-| **Sudoo.sh CRM Demos** | `sudoo_crm` | A **Create demo** button on opportunities | CRM |
-| **Sudoo.sh Project Tests** | `sudoo_project` | A **Test instance** button on tasks | Project |
+| [**Sudoo.sh Instance Manager**](https://apps.odoo.com/apps/modules/19.0/sudoo_base) | `sudoo_base` | Panels, what users may create, the instance list, the **New instance** wizard, Start, Pause, Restart, Back up, Extend, Delete | nothing |
+| [**Sudoo.sh Helpdesk Tests**](https://apps.odoo.com/apps/modules/19.0/sudoo_helpdesk) | `sudoo_helpdesk` | A **Test instance** button on tickets | Helpdesk (Odoo Enterprise) |
+| [**Sudoo.sh CRM Demos**](https://apps.odoo.com/apps/modules/19.0/sudoo_crm) | `sudoo_crm` | A **Create demo** button on opportunities | CRM |
+| [**Sudoo.sh Project Tests**](https://apps.odoo.com/apps/modules/19.0/sudoo_project) | `sudoo_project` | A **Test instance** button on tasks | Project |
 
 Every record with instances shows an **Instances** smart button, and the link is posted in its chatter when the
 instance is ready. The interface is available in English and Arabic.
@@ -50,7 +51,10 @@ The user manual and developer guide are on the 20.0 branch: https://github.com/S
 
 ## Installing
 
-From the Odoo Apps store: search for **Sudoo.sh** and install the apps you want.
+From the Odoo Apps store (free): [Instance Manager](https://apps.odoo.com/apps/modules/19.0/sudoo_base), [CRM Demos](https://apps.odoo.com/apps/modules/19.0/sudoo_crm),
+[Project Tests](https://apps.odoo.com/apps/modules/19.0/sudoo_project) and [Helpdesk Tests](https://apps.odoo.com/apps/modules/19.0/sudoo_helpdesk), or
+[all Sudoo.sh apps](https://apps.odoo.com/apps/modules/browse?author=Sudoo.sh). Each store page switches between
+Odoo 17.0, 18.0, 19.0 and 20.0.
 
 From this repository: put the folders of the branch matching your Odoo version (for example `19.0`) in an add-ons
 path, update the apps list and install them.
