@@ -24,7 +24,8 @@ class TestAccess(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.env = cls.env(context=dict(cls.env.context, lang="en_US"))  # messages are checked in English
+        cls.env["res.lang"]._activate_lang("en_US")  # messages are checked in English, in any database
+        cls.env = cls.env(context=dict(cls.env.context, lang="en_US"))
         cls.server = cls.env["sudoo.server"].create({
             "name": "Panel", "url": "https://panel.example.com", "token": "t", "secret": "s",
             "allow_repository": False, "allow_demo_data": False, "max_lifetime_days": 30, "default_lifetime_days": 7,
@@ -37,7 +38,7 @@ class TestAccess(TransactionCase):
         cls.outsider = new_test_user(cls.env, login="outsider", groups="base.group_user", lang="en_US")
 
     def wizard(self, user=None, **values):
-        env = self.env(user=user or self.user)
+        env = self.env(user=user or self.user, context=dict(self.env.context, lang="en_US"))
         form = Form(env["sudoo.instance.create"])
         for key, value in values.items():
             setattr(form, key, value)
@@ -45,7 +46,7 @@ class TestAccess(TransactionCase):
 
     def run_create(self, wizard):
         with patch.object(PanelClient, "request", side_effect=lambda self, *a, **k: fake_panel(*a, **k), autospec=True):
-            return wizard.action_create()
+            return wizard.with_context(lang="en_US").action_create()
 
     def test_form_offers_only_what_is_allowed(self):
         with patch.object(PanelClient, "request", side_effect=lambda self, *a, **k: fake_panel(*a, **k), autospec=True):
