@@ -4,7 +4,7 @@ All notable changes to the Sudoo.sh apps for Odoo. Versions follow Odoo's scheme
 
 ## 1.0.0 (2026-11-16)
 
-First release, for Odoo 20.0 (`20.0.1.0.0`) and 19.0 (`19.0.1.0.0`).
+First release, for Odoo 20.0, 19.0, 18.0 and 17.0 (`<series>.1.0.0`). Use a panel token with the **Instances** scope.
 
 ### Sudoo.sh Instance Manager (`sudoo_base`)
 

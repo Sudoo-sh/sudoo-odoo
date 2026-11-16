@@ -158,10 +158,10 @@ msgstr ""
 #. module: sudoo_base
 #: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
 msgid ""
-"Create the token in the panel under <b>API tokens</b>, with the <b>write</b> scope.\n"
+"Create the token in the panel under <b>API tokens</b>, with the <b>Instances</b> scope.\n"
 "                        The panel shows the token and its signing secret once: paste both here."
 msgstr ""
-"أنشئ الرمز في لوحة التحكم ضمن <b>API tokens</b> بنطاق <b>write</b>.\n"
+"أنشئ الرمز في لوحة التحكم ضمن <b>API tokens</b> بنطاق <b>Instances</b>.\n"
 "                        تعرض لوحة التحكم الرمز وسر التوقيع الخاص به مرة واحدة فقط: الصقهما هنا."
 
 #. module: sudoo_base
