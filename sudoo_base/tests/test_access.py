@@ -24,6 +24,7 @@ class TestAccess(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.env = cls.env(context=dict(cls.env.context, lang="en_US"))  # messages are checked in English
         cls.server = cls.env["sudoo.server"].create({
             "name": "Panel", "url": "https://panel.example.com", "token": "t", "secret": "s",
             "allow_repository": False, "allow_demo_data": False, "max_lifetime_days": 30, "default_lifetime_days": 7,
@@ -32,8 +33,8 @@ class TestAccess(TransactionCase):
         with patch.object(PanelClient, "request", side_effect=lambda self, *a, **k: fake_panel(*a, **k), autospec=True):
             cls.server._refresh_versions()
         cls.server.version_ids.filtered(lambda line: line.name == "19.0").allowed = False
-        cls.user = new_test_user(cls.env, login="seller", groups="sudoo_base.group_sudoo_user")
-        cls.outsider = new_test_user(cls.env, login="outsider", groups="base.group_user")
+        cls.user = new_test_user(cls.env, login="seller", groups="sudoo_base.group_sudoo_user", lang="en_US")
+        cls.outsider = new_test_user(cls.env, login="outsider", groups="base.group_user", lang="en_US")
 
     def wizard(self, user=None, **values):
         env = self.env(user=user or self.user)
