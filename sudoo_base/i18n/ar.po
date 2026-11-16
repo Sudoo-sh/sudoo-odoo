@@ -986,3 +986,43 @@ msgstr "لا شيء"
 #: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_create_view_form
 msgid "sales-demo"
 msgstr "sales-demo"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+msgid "This is not a valid instance name."
+msgstr "هذا ليس اسم نسخة صالحاً."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+msgid "The panel's address, API token and signing secret are all needed."
+msgstr "يلزم عنوان لوحة التحكم ورمز API وسر التوقيع جميعاً."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+#, python-format
+msgid "The panel at %(host)s could not be reached (%(reason)s)."
+msgstr "تعذّر الوصول إلى لوحة التحكم على %(host)s (%(reason)s)."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+#, python-format
+msgid "The panel at %(host)s sent an answer that is too large."
+msgstr "أرسلت لوحة التحكم على %(host)s رداً كبيراً جداً."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+#, python-format
+msgid "The panel at %(host)s answered with a redirect. Check the panel address."
+msgstr "ردّت لوحة التحكم على %(host)s بإعادة توجيه. تحقّق من عنوان لوحة التحكم."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+#, python-format
+msgid "The panel refused this: %(detail)s"
+msgstr "رفضت لوحة التحكم هذا الطلب: %(detail)s"

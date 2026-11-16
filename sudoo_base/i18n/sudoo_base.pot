@@ -973,3 +973,43 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_create_view_form
 msgid "sales-demo"
 msgstr ""
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+msgid "This is not a valid instance name."
+msgstr ""
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+msgid "The panel's address, API token and signing secret are all needed."
+msgstr ""
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+#, python-format
+msgid "The panel at %(host)s could not be reached (%(reason)s)."
+msgstr ""
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+#, python-format
+msgid "The panel at %(host)s sent an answer that is too large."
+msgstr ""
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+#, python-format
+msgid "The panel at %(host)s answered with a redirect. Check the panel address."
+msgstr ""
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+#, python-format
+msgid "The panel refused this: %(detail)s"
+msgstr ""

@@ -91,7 +91,20 @@ class SudooServer(models.Model):
                 self.sudo().acting_for_unsupported = True
                 return answer
         except PanelError as error:
-            raise UserError(str(error)) from error
+            raise UserError(self._panel_message(error)) from error
+
+    def _panel_message(self, error):
+        """A PanelError in the user's language (the panel's own detail stays as the panel wrote it)."""
+        messages = {
+            "bad_name": _("This is not a valid instance name."),
+            "incomplete": _("The panel's address, API token and signing secret are all needed."),
+            "unreachable": _("The panel at %(host)s could not be reached (%(reason)s)."),
+            "too_large": _("The panel at %(host)s sent an answer that is too large."),
+            "redirect": _("The panel at %(host)s answered with a redirect. Check the panel address."),
+            "refused": _("The panel refused this: %(detail)s"),
+        }
+        template = messages.get(error.kind)
+        return template % error.values if template else str(error)
 
     def _refresh_versions(self):
         """Read the Odoo versions the panel offers: new ones are added (allowed), gone ones removed."""

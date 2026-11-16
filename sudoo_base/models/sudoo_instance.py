@@ -68,7 +68,7 @@ class SudooInstance(models.Model):
         try:
             return instance_path(self.name)
         except PanelError as error:
-            raise UserError(str(error)) from error
+            raise UserError(self.server_id._panel_message(error)) from error
 
     def _write_as_module(self, values):
         """Users may only read instances (security/ir.access.csv): what changes, the module writes, after the
