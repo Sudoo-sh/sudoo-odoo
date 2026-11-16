@@ -78,17 +78,29 @@ class PanelClient:
         host = urlsplit(self.url).netloc
         try:
             # never follow a redirect: the signed request is meant for this panel only
-            answer = requests.request(method, self.url + full_path, data=raw or None, headers=headers,
-                                      timeout=TIMEOUT_SECONDS, allow_redirects=False, stream=True)
+            answer = requests.request(
+                method,
+                self.url + full_path,
+                data=raw or None,
+                headers=headers,
+                timeout=TIMEOUT_SECONDS,
+                allow_redirects=False,
+                stream=True,
+            )
             content = answer.raw.read(MAX_ANSWER_BYTES + 1, decode_content=True) if answer.raw else b""
         except requests.RequestException as error:
-            raise PanelError(f"The panel at {host} could not be reached ({error.__class__.__name__}).", kind="unreachable",
-                             host=host, reason=error.__class__.__name__) from error
+            raise PanelError(
+                f"The panel at {host} could not be reached ({error.__class__.__name__}).",
+                kind="unreachable",
+                host=host,
+                reason=error.__class__.__name__,
+            ) from error
         if len(content) > MAX_ANSWER_BYTES:
             raise PanelError(f"The panel at {host} sent an answer that is too large.", kind="too_large", host=host)
         if 300 <= answer.status_code < 400:
-            raise PanelError(f"The panel at {host} answered with a redirect. Check the panel address.", kind="redirect",
-                             host=host)
+            raise PanelError(
+                f"The panel at {host} answered with a redirect. Check the panel address.", kind="redirect", host=host
+            )
         if answer.status_code == 204:
             return None
         payload = self._json(content)

@@ -1,0 +1,22 @@
+# Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details.
+# Code style only: the modules are installed by Odoo, not packaged with this file.
+
+[tool.black]
+line-length = 120
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "C4", "SIM", "RUF"]
+ignore = ["RUF001", "RUF012"]  # Arabic text in strings; Odoo's class-level field and attribute definitions
+
+[tool.ruff.lint.isort]
+known-first-party = ["odoo"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.lint.per-file-ignores]
+"__manifest__.py" = ["B018"]  # a manifest is a bare dictionary
+"__init__.py" = ["F401"]  # imports that load the module's files

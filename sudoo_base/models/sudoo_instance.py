@@ -49,8 +49,9 @@ class SudooInstance(models.Model):
     source = fields.Selection([("repository", "Repository"), ("plain", "Plain Odoo")], readonly=True)
     repository = fields.Char(readonly=True)
     branch = fields.Char(readonly=True)
-    lifetime_days = fields.Integer(readonly=True, help="Deleted automatically this many days after its creation "
-                                                       "(a backup is kept); 0 keeps it.")
+    lifetime_days = fields.Integer(
+        readonly=True, help="Deleted automatically this many days after its creation " "(a backup is kept); 0 keeps it."
+    )
     panel_created_at = fields.Datetime(string="Created on the panel", readonly=True)
     panel_created_by = fields.Char(readonly=True)
     user_id = fields.Many2one("res.users", string="Requested by", readonly=True, default=lambda self: self.env.user)
@@ -131,8 +132,13 @@ class SudooInstance(models.Model):
 
     def action_open_record(self):
         self.ensure_one()
-        return {"type": "ir.actions.act_window", "res_model": self.res_model, "res_id": self.res_id,
-                "view_mode": "form", "target": "current"}
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": self.res_model,
+            "res_id": self.res_id,
+            "view_mode": "form",
+            "target": "current",
+        }
 
     # ------------------------------------------------------------------ keeping in step with the panel
 
@@ -170,13 +176,16 @@ class SudooInstance(models.Model):
     def _sync_servers(self, servers):
         for server in servers:
             listed = server._call("GET", "/instances", params={"limit": 500}) or []
-            known = {instance.name: instance for instance in self.with_context(active_test=False).search(
-                [("server_id", "=", server.id)])}
+            known = {
+                instance.name: instance
+                for instance in self.with_context(active_test=False).search([("server_id", "=", server.id)])
+            }
             for data in listed:
                 if not isinstance(data, dict) or not INSTANCE_NAME_RE.match(str(data.get("name") or "")):
                     continue  # never store what is not an instance of the panel
-                instance = known.pop(data["name"], None) or self.sudo().create({"name": data["name"], "server_id": server.id,
-                                                                          "user_id": False, "status": "unknown"})
+                instance = known.pop(data["name"], None) or self.sudo().create(
+                    {"name": data["name"], "server_id": server.id, "user_id": False, "status": "unknown"}
+                )
                 instance._apply(data)
             for gone in known.values():
                 if gone.status != "deleted":
