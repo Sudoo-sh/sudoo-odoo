@@ -51,8 +51,10 @@ git clone -b 17.0 https://github.com/Sudoo-sh/sudoo-odoo.git
 
 ## Connecting your panel
 
-1. In the Sudoo.sh panel: **API tokens**, **Create token**, scope **write**. The panel shows the token and its
-   signing secret once.
+1. In the Sudoo.sh panel: **API tokens**, **Create token**, scope **Instances**. That scope can only list, create,
+   start, pause, restart, back up, extend and delete instances: never passwords, logs, backups, accounts or
+   settings. The panel shows the token and its signing secret once. (Panels older than the Instances scope only
+   offer **write**; update the panel to get the narrower token.)
 2. In Odoo: **Sudoo.sh → Configuration → Panels → New**. Enter the panel's address, the token and the signing
    secret, then click **Test connection**.
 3. On the panel's tab **What users may create**, choose what Odoo users may create there: plain Odoo and/or
@@ -64,8 +66,9 @@ git clone -b 17.0 https://github.com/Sudoo-sh/sudoo-odoo.git
      backs them up. Users never edit instances directly.
    - **Administrator**: also connects panels, sets the rules, extends lifetimes and deletes instances.
 
-The token and the secret are visible to administrators only; every request to the panel is signed and the panel
-address must use https. The instances' Odoo passwords are never copied into Odoo.
+The token and the secret are visible to administrators only. Every request to the panel is signed, including the
+Odoo user it is made for (shown in the panel's audit log and counted in its per-person limits); redirects are never
+followed and the panel address must use https. The instances' Odoo passwords are never copied into Odoo.
 
 ## Using it
 
