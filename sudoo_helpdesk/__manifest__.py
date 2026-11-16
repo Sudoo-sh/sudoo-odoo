@@ -1,6 +1,6 @@
 # Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details.
 {
-    "name": "Sudoo.sh for Helpdesk",
+    "name": "Sudoo.sh – Helpdesk Test Instances",
     "summary": "A Test instance button on Helpdesk tickets: a live Odoo to reproduce a problem or check a fix",
     "version": "19.0.1.0.0",
     "category": "Productivity",

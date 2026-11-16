@@ -29,7 +29,7 @@ what happened. Security problems: never in an issue; follow the
 ## Proposing a change
 
 1. Open an issue first for anything bigger than a small fix, so we agree on the approach.
-2. Branch from the version branch you change (`19.0`, ...), named `fix/...` or `feat/...`.
+2. Branch from the version branch you change (`20.0`, `19.0`, ...), named `fix/...` or `feat/...`.
 3. Keep one subject per pull request, with tests for new behaviour.
 4. Sign off every commit (`git commit -s`): it states that you wrote the change and may contribute it.
 5. Open the pull request against that version branch. A maintainer reviews it; once merged, Sudoo.sh ports it to
