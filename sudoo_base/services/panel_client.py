@@ -27,16 +27,19 @@ ACTING_FOR_RE = re.compile(r"[^A-Za-z0-9._@+-]")  # what the panel accepts in X-
 def instance_path(name):
     """/instances/<name>, refusing anything that is not an instance name (it becomes part of the address)."""
     if not INSTANCE_NAME_RE.match(name or ""):
-        raise PanelError("This is not a valid instance name.")
+        raise PanelError("This is not a valid instance name.", kind="bad_name")
     return f"/instances/{quote(name)}"
 
 
 class PanelError(Exception):
-    """The panel refused a request or could not be reached. The message is meant for users."""
+    """The panel refused a request or could not be reached. `kind` names the problem and `values` fill its message;
+    sudoo.server._panel_message turns them into the user's language. str() is the English message."""
 
-    def __init__(self, message, status=None):
+    def __init__(self, message, status=None, kind=None, **values):
         super().__init__(message)
         self.status = status
+        self.kind = kind
+        self.values = values
 
 
 class PanelClient:
@@ -66,7 +69,7 @@ class PanelClient:
     def request(self, method, path, params=None, body=None):
         """Send a signed request to API_PREFIX + path; returns the answer's "data" (None for 204)."""
         if not (self.url and self.token and self.secret):
-            raise PanelError("The panel's address, API token and signing secret are all needed.")
+            raise PanelError("The panel's address, API token and signing secret are all needed.", kind="incomplete")
         full_path = API_PREFIX + path + (("?" + urlencode(params)) if params else "")
         raw = json.dumps(body, separators=(",", ":")).encode() if body is not None else b""
         headers = self._signed_headers(method, full_path, raw)
@@ -79,17 +82,19 @@ class PanelClient:
                                       timeout=TIMEOUT_SECONDS, allow_redirects=False, stream=True)
             content = answer.raw.read(MAX_ANSWER_BYTES + 1, decode_content=True) if answer.raw else b""
         except requests.RequestException as error:
-            raise PanelError(f"The panel at {host} could not be reached ({error.__class__.__name__}).") from error
+            raise PanelError(f"The panel at {host} could not be reached ({error.__class__.__name__}).", kind="unreachable",
+                             host=host, reason=error.__class__.__name__) from error
         if len(content) > MAX_ANSWER_BYTES:
-            raise PanelError(f"The panel at {host} sent an answer that is too large.")
+            raise PanelError(f"The panel at {host} sent an answer that is too large.", kind="too_large", host=host)
         if 300 <= answer.status_code < 400:
-            raise PanelError(f"The panel at {host} answered with a redirect. Check the panel address.")
+            raise PanelError(f"The panel at {host} answered with a redirect. Check the panel address.", kind="redirect",
+                             host=host)
         if answer.status_code == 204:
             return None
         payload = self._json(content)
         if answer.status_code >= 400:
             detail = payload.get("detail") or payload.get("title") or answer.reason
-            raise PanelError(f"The panel refused this: {detail}", answer.status_code)
+            raise PanelError(f"The panel refused this: {detail}", answer.status_code, kind="refused", detail=detail)
         return payload.get("data")
 
     # ------------------------------------------------------------------ signing
