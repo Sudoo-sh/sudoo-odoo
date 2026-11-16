@@ -16,7 +16,7 @@
                         <field name="instance_name" placeholder="sales-demo"/>
                     </group>
                     <group>
-                        <field name="version" placeholder="19.0"/>
+                        <field name="version" placeholder="20.0"/>
                         <field name="edition"/>
                         <field name="lifetime_days"/>
                         <field name="demo_data"/>

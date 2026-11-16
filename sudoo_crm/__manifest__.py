@@ -1,8 +1,8 @@
 # Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details.
 {
-    "name": "Sudoo.sh for CRM",
+    "name": "Sudoo.sh – CRM Demo Instances",
     "summary": "A Create demo button on opportunities: a live Odoo demo for each prospect",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Productivity",
     "author": "Sudoo.sh",
     "website": "https://sudoo.sh",

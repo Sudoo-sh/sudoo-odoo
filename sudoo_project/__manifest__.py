@@ -1,8 +1,8 @@
 # Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details.
 {
-    "name": "Sudoo.sh for Project",
+    "name": "Sudoo.sh – Project Test Instances",
     "summary": "A Test instance button on tasks: a live Odoo of the task branch for review",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Productivity",
     "author": "Sudoo.sh",
     "website": "https://sudoo.sh",

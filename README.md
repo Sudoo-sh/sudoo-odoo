@@ -24,14 +24,14 @@
 
 ## The apps
 
-Install only what you need; each app installs `Sudoo.sh` (the base) with it.
+Install only what you need; each app installs the Instance Manager (`sudoo_base`) with it.
 
 | App | Technical name | Adds | Needs |
 | :--- | :--- | :--- | :--- |
-| **Sudoo.sh** | `sudoo_base` | Panels, the instance list, the **New instance** wizard, Start, Pause, Restart, Back up, Extend, Delete | nothing |
-| **Sudoo.sh for Helpdesk** | `sudoo_helpdesk` | A **Test instance** button on tickets | Helpdesk (Odoo Enterprise) |
-| **Sudoo.sh for CRM** | `sudoo_crm` | A **Create demo** button on opportunities | CRM |
-| **Sudoo.sh for Project** | `sudoo_project` | A **Test instance** button on tasks | Project |
+| **Sudoo.sh – Odoo Instance Manager** | `sudoo_base` | Panels, the instance list, the **New instance** wizard, Start, Pause, Restart, Back up, Extend, Delete | nothing |
+| **Sudoo.sh – Helpdesk Test Instances** | `sudoo_helpdesk` | A **Test instance** button on tickets | Helpdesk (Odoo Enterprise) |
+| **Sudoo.sh – CRM Demo Instances** | `sudoo_crm` | A **Create demo** button on opportunities | CRM |
+| **Sudoo.sh – Project Test Instances** | `sudoo_project` | A **Test instance** button on tasks | Project |
 
 Every record with instances shows an **Instances** smart button, and the link is posted in its chatter when the
 instance is ready.
@@ -40,11 +40,11 @@ instance is ready.
 
 From the Odoo Apps store: search for **Sudoo.sh** and install the apps you want.
 
-From this repository: put the folders of the branch matching your Odoo version (for example `19.0`) in an add-ons
+From this repository: put the folders of the branch matching your Odoo version (for example `20.0`) in an add-ons
 path, update the apps list and install them.
 
 ```bash
-git clone -b 19.0 https://github.com/Sudoo-sh/sudoo-odoo.git
+git clone -b 20.0 https://github.com/Sudoo-sh/sudoo-odoo.git
 ```
 
 ## Connecting your panel
@@ -111,8 +111,8 @@ long as it does not copy code from these modules.
 
 ## Versions
 
-One branch per Odoo version: `19.0` (first), then `20.0`, `18.0` and `17.0`. The panel itself runs Odoo 16.0 and
-later.
+One branch per Odoo version: `20.0` and `19.0` now, `18.0` and `17.0` next. Use the branch of the Odoo
+version your company runs. The instances you create can be any version the panel offers (16.0 and later).
 
 ---
 

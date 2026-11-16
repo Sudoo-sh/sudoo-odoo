@@ -1,8 +1,8 @@
 # Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details.
 {
-    "name": "Sudoo.sh",
+    "name": "Sudoo.sh – Odoo Instance Manager",
     "summary": "Create and manage Sudoo.sh Odoo instances (demos, tests, training) from inside Odoo",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Productivity",
     "author": "Sudoo.sh",
     "website": "https://sudoo.sh",
@@ -12,7 +12,7 @@
     "depends": ["base", "mail"],
     "data": [
         "security/sudoo_security.xml",
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
         "data/ir_cron.xml",
         "views/sudoo_instance_views.xml",
         "views/sudoo_server_views.xml",

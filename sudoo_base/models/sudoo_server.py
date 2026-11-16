@@ -19,7 +19,7 @@ class SudooServer(models.Model):
     token = fields.Char(string="API token", groups="sudoo_base.group_sudoo_manager", copy=False)
     secret = fields.Char(string="Signing secret", groups="sudoo_base.group_sudoo_manager", copy=False)
     company_id = fields.Many2one("res.company", default=lambda self: self.env.company)
-    default_version = fields.Char(string="Default Odoo version", default="19.0")
+    default_version = fields.Char(string="Default Odoo version", default="20.0")
     default_lifetime_days = fields.Integer(string="Default lifetime (days)", default=14,
                                            help="0 keeps instances until they are deleted by hand.")
     instance_ids = fields.One2many("sudoo.instance", "server_id")
