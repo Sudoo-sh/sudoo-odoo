@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: ["19.0"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Install and test on Odoo 19.0
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - name: Start PostgreSQL
+        run: |
+          docker network create odoo
+          docker run -d --name db --network odoo -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres postgres:16
+          for i in $(seq 30); do docker exec db pg_isready -U odoo && break; sleep 2; done
+      - name: Install the apps and run their tests
+        # Helpdesk is part of Odoo Enterprise, so sudoo_helpdesk cannot be installed here
+        run: |
+          docker run --rm --network odoo -e HOST=db -e USER=odoo -e PASSWORD=odoo \
+            -v "$PWD":/mnt/extra-addons:ro odoo:19.0 \
+            odoo -d test -i sudoo_base,sudoo_crm,sudoo_project \
+            --test-enable --test-tags /sudoo_base,/sudoo_crm,/sudoo_project --stop-after-init \
+            2>&1 | tee odoo.log
+          ! grep -E "(ERROR|CRITICAL)" odoo.log
+          grep -E "0 failed, 0 error\(s\)" odoo.log

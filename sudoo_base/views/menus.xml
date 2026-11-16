@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details. -->
+<odoo>
+    <menuitem id="menu_sudoo_root" name="Sudoo.sh" web_icon="sudoo_base,static/description/icon.png"
+              groups="sudoo_base.group_sudoo_user" sequence="80"/>
+    <menuitem id="menu_sudoo_instances" name="Instances" parent="menu_sudoo_root" action="action_sudoo_instance" sequence="10"/>
+    <menuitem id="menu_sudoo_new_instance" name="New instance" parent="menu_sudoo_root" action="action_sudoo_instance_create" sequence="20"/>
+    <menuitem id="menu_sudoo_config" name="Configuration" parent="menu_sudoo_root" groups="sudoo_base.group_sudoo_manager" sequence="90"/>
+    <menuitem id="menu_sudoo_servers" name="Panels" parent="menu_sudoo_config" action="action_sudoo_server" sequence="10"/>
+</odoo>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details. -->
+<odoo>
+    <record id="sudoo_instance_view_list" model="ir.ui.view">
+        <field name="name">sudoo.instance.list</field>
+        <field name="model">sudoo.instance</field>
+        <field name="arch" type="xml">
+            <list create="false" decoration-muted="status in ('deleted', 'switched_off', 'stopped')">
+                <field name="name"/>
+                <field name="status" widget="badge" decoration-success="status == 'online'"
+                       decoration-info="status in ('creating', 'starting', 'busy')" decoration-warning="status == 'paused'"/>
+                <field name="odoo_version"/>
+                <field name="edition" optional="show"/>
+                <field name="branch" optional="show"/>
+                <field name="url" widget="url" optional="show"/>
+                <field name="lifetime_days" optional="hide"/>
+                <field name="user_id" widget="many2one_avatar_user" optional="show"/>
+                <field name="server_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="sudoo_instance_view_form" model="ir.ui.view">
+        <field name="name">sudoo.instance.form</field>
+        <field name="model">sudoo.instance</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <header>
+                    <button name="action_open" type="object" string="Open" class="btn-primary" icon="fa-external-link"
+                            invisible="not url or status not in ('online', 'paused')"/>
+                    <button name="action_start" type="object" string="Start" invisible="status not in ('paused', 'switched_off', 'stopped')"/>
+                    <button name="action_restart" type="object" string="Restart" invisible="status != 'online'"/>
+                    <button name="action_pause" type="object" string="Pause" invisible="status != 'online'"/>
+                    <button name="action_backup" type="object" string="Back up" invisible="status not in ('online', 'paused')"/>
+                    <button name="action_extend" type="object" string="Extend lifetime" groups="sudoo_base.group_sudoo_manager"
+                            invisible="lifetime_days == 0 or status == 'deleted'"/>
+                    <button name="action_delete" type="object" string="Delete" groups="sudoo_base.group_sudoo_manager"
+                            invisible="status in ('creating', 'deleted')"
+                            confirm="Delete this instance? Odoo, its database and its files are removed; the panel keeps a backup."/>
+                    <field name="status" widget="statusbar" statusbar_visible="creating,online,paused"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_record" type="object" class="oe_stat_button" icon="fa-link"
+                                invisible="not res_model" string="Linked record"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <field name="url" widget="url"/>
+                    </div>
+                    <group>
+                        <group string="Odoo">
+                            <field name="odoo_version"/>
+                            <field name="edition"/>
+                            <field name="source"/>
+                            <field name="repository" widget="url" invisible="source != 'repository'"/>
+                            <field name="branch" invisible="source != 'repository'"/>
+                        </group>
+                        <group string="Lifecycle">
+                            <field name="lifetime_days"/>
+                            <field name="panel_created_at"/>
+                            <field name="user_id"/>
+                            <field name="server_id"/>
+                            <field name="res_model" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="sudoo_instance_view_search" model="ir.ui.view">
+        <field name="name">sudoo.instance.search</field>
+        <field name="model">sudoo.instance</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="branch"/>
+                <field name="user_id"/>
+                <filter name="mine" string="Mine" domain="[('user_id', '=', uid)]"/>
+                <filter name="active_instances" string="Not deleted" domain="[('status', '!=', 'deleted')]"/>
+                <separator/>
+                <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
+                <filter name="group_version" string="Odoo version" context="{'group_by': 'odoo_version'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sudoo_instance" model="ir.actions.act_window">
+        <field name="name">Instances</field>
+        <field name="res_model">sudoo.instance</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active_instances': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No instances yet</p>
+            <p>Click <b>New instance</b> to create one on your Sudoo.sh panel.</p>
+        </field>
+    </record>
+</odoo>

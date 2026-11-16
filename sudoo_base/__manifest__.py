@@ -1,0 +1,25 @@
+# Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details.
+{
+    "name": "Sudoo.sh",
+    "summary": "Create and manage Sudoo.sh Odoo instances (demos, tests, training) from inside Odoo",
+    "version": "19.0.1.0.0",
+    "category": "Productivity",
+    "author": "Sudoo.sh",
+    "website": "https://sudoo.sh",
+    "license": "OPL-1",
+    "price": 0,
+    "currency": "USD",
+    "depends": ["base", "mail"],
+    "data": [
+        "security/sudoo_security.xml",
+        "security/ir.model.access.csv",
+        "data/ir_cron.xml",
+        "views/sudoo_instance_views.xml",
+        "views/sudoo_server_views.xml",
+        "wizard/sudoo_instance_create_views.xml",
+        "views/menus.xml",
+    ],
+    "images": ["static/description/icon.png"],
+    "application": True,
+    "installable": True,
+}

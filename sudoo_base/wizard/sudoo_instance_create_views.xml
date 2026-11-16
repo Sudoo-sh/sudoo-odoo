@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details. -->
+<odoo>
+    <record id="sudoo_instance_create_view_form" model="ir.ui.view">
+        <field name="name">sudoo.instance.create.form</field>
+        <field name="model">sudoo.instance.create</field>
+        <field name="arch" type="xml">
+            <form string="New instance">
+                <group>
+                    <group>
+                        <field name="server_id" options="{'no_create': True}"/>
+                        <field name="source" widget="radio"/>
+                        <field name="repository" invisible="source != 'repository'" required="source == 'repository'"
+                               placeholder="https://github.com/acme/odoo-addons"/>
+                        <field name="branch" invisible="source != 'repository'"/>
+                        <field name="instance_name" placeholder="sales-demo"/>
+                    </group>
+                    <group>
+                        <field name="version" placeholder="19.0"/>
+                        <field name="edition"/>
+                        <field name="lifetime_days"/>
+                        <field name="demo_data"/>
+                        <field name="install_modules" invisible="source != 'repository'"/>
+                        <field name="res_model" invisible="1"/>
+                        <field name="res_id" invisible="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_create" type="object" string="Create" class="btn-primary"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sudoo_instance_create" model="ir.actions.act_window">
+        <field name="name">New instance</field>
+        <field name="res_model">sudoo.instance.create</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

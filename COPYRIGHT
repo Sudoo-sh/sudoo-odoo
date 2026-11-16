@@ -1,0 +1,14 @@
+Sudoo.sh for Odoo
+Copyright (c) 2026 Sudoo.sh (https://sudoo.sh). All rights reserved.
+
+The modules in this repository are proprietary software of Sudoo.sh, licensed under
+the Odoo Proprietary License v1.0 (see LICENSE). They are free of charge on the Odoo
+Apps store. Obtaining them there, or from this repository, gives you a licence to use
+them under the terms in LICENSE.
+
+You may write your own modules that depend on these modules and extend them through
+Odoo's inheritance. You may not publish, distribute, sublicense or sell copies of
+these modules or modified copies of them.
+
+"Sudoo.sh" and its logo are trademarks of Sudoo.sh. Odoo is a trademark of Odoo S.A.;
+Sudoo.sh is not affiliated with Odoo S.A.

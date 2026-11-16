@@ -1,0 +1,9 @@
+__pycache__/
+*.py[co]
+.venv/
+.idea/
+.vscode/
+*.log
+# local, never published
+CLAUDE.md
+.claude/

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details. -->
+<odoo>
+    <record id="view_form_sudoo" model="ir.ui.view">
+        <field name="name">crm.lead.form.sudoo</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_sudoo_create_instance" type="object" string="Create demo"
+                        groups="sudoo_base.group_sudoo_user"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_sudoo_view_instances" type="object" class="oe_stat_button" icon="fa-server"
+                        groups="sudoo_base.group_sudoo_user" invisible="sudoo_instance_count == 0">
+                    <field name="sudoo_instance_count" widget="statinfo" string="Instances"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
