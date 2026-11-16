@@ -28,13 +28,16 @@ Install only what you need; each app installs the Instance Manager (`sudoo_base`
 
 | App | Technical name | Adds | Needs |
 | :--- | :--- | :--- | :--- |
-| **Sudoo.sh – Odoo Instance Manager** | `sudoo_base` | Panels, the instance list, the **New instance** wizard, Start, Pause, Restart, Back up, Extend, Delete | nothing |
-| **Sudoo.sh – Helpdesk Test Instances** | `sudoo_helpdesk` | A **Test instance** button on tickets | Helpdesk (Odoo Enterprise) |
-| **Sudoo.sh – CRM Demo Instances** | `sudoo_crm` | A **Create demo** button on opportunities | CRM |
-| **Sudoo.sh – Project Test Instances** | `sudoo_project` | A **Test instance** button on tasks | Project |
+| **Sudoo.sh Instance Manager** | `sudoo_base` | Panels, what users may create, the instance list, the **New instance** wizard, Start, Pause, Restart, Back up, Extend, Delete | nothing |
+| **Sudoo.sh Helpdesk Tests** | `sudoo_helpdesk` | A **Test instance** button on tickets | Helpdesk (Odoo Enterprise) |
+| **Sudoo.sh CRM Demos** | `sudoo_crm` | A **Create demo** button on opportunities | CRM |
+| **Sudoo.sh Project Tests** | `sudoo_project` | A **Test instance** button on tasks | Project |
 
 Every record with instances shows an **Instances** smart button, and the link is posted in its chatter when the
-instance is ready.
+instance is ready. The interface is available in English and Arabic.
+
+**Documentation:** [User manual](docs/USER_MANUAL.md) · [Developer guide](docs/DEVELOPER_GUIDE.md) · PDFs in
+[docs/](docs) (user manual in English and Arabic, technical overview, completeness checklist).
 
 ## Installing
 
@@ -53,12 +56,17 @@ git clone -b 20.0 https://github.com/Sudoo-sh/sudoo-odoo.git
    signing secret once.
 2. In Odoo: **Sudoo.sh → Configuration → Panels → New**. Enter the panel's address, the token and the signing
    secret, then click **Test connection**.
-3. Give people access in **Settings → Users**, under **Sudoo.sh**:
-   - **User**: sees the company's instances, creates instances, starts, pauses, restarts and backs them up.
-   - **Administrator**: also connects panels, extends lifetimes and deletes instances.
+3. On the panel's tab **What users may create**, choose what Odoo users may create there: plain Odoo and/or
+   GitHub repositories, Enterprise, demo data, which Odoo versions, the default and longest lifetime, and how many
+   instances one person may have. The New instance wizard offers only that and says what is not allowed; every
+   rule is checked again on **Create**.
+4. Give people access in **Settings → Users**, under **Sudoo.sh**:
+   - **User**: sees the company's instances, creates instances within those rules, starts, pauses, restarts and
+     backs them up. Users never edit instances directly.
+   - **Administrator**: also connects panels, sets the rules, extends lifetimes and deletes instances.
 
-The token and the secret are visible to administrators only. Odoo's admin passwords of the instances are never
-copied into Odoo.
+The token and the secret are visible to administrators only; every request to the panel is signed and the panel
+address must use https. The instances' Odoo passwords are never copied into Odoo.
 
 ## Using it
 

@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError
 
-from ..services.panel_client import PanelError
+from ..services.panel_client import INSTANCE_NAME_RE, PanelError, instance_path
 
 _logger = logging.getLogger(__name__)
 
@@ -65,7 +65,10 @@ class SudooInstance(models.Model):
 
     def _path(self):
         self.ensure_one()
-        return f"/instances/{self.name}"
+        try:
+            return instance_path(self.name)
+        except PanelError as error:
+            raise UserError(str(error)) from error
 
     def _write_as_module(self, values):
         """Users may only read instances (security/ir.access.csv): what changes, the module writes, after the
@@ -167,6 +170,8 @@ class SudooInstance(models.Model):
             known = {instance.name: instance for instance in self.with_context(active_test=False).search(
                 [("server_id", "=", server.id)])}
             for data in listed:
+                if not isinstance(data, dict) or not INSTANCE_NAME_RE.match(str(data.get("name") or "")):
+                    continue  # never store what is not an instance of the panel
                 instance = known.pop(data["name"], None) or self.sudo().create({"name": data["name"], "server_id": server.id,
                                                                           "user_id": False, "status": "unknown"})
                 instance._apply(data)
