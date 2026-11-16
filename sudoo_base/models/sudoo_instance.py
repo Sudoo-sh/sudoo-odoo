@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError
 
-from ..services.panel_client import PanelError
+from ..services.panel_client import INSTANCE_NAME_RE, PanelError, instance_path
 
 _logger = logging.getLogger(__name__)
 
@@ -59,21 +59,27 @@ class SudooInstance(models.Model):
     res_model = fields.Char(readonly=True, index=True)
     res_id = fields.Many2oneReference(model_field="res_model", readonly=True, index=True)
 
-    _name_server_unique = models.Constraint("unique(server_id, name)", "An instance name is unique per panel.")
+    _sql_constraints = [
+        ("name_server_unique", "unique(server_id, name)", "An instance name is unique per panel."),
+    ]
 
     # ------------------------------------------------------------------ panel calls
 
     def _path(self):
         self.ensure_one()
-        return f"/instances/{self.name}"
+        try:
+            return instance_path(self.name)
+        except PanelError as error:
+            raise UserError(str(error)) from error
 
     def _write_as_module(self, values):
-        """Users may only read instances (security/ir.access.csv): what changes, the module writes, after the
+        """Users may only read instances (security/ir.model.access.csv): what changes, the module writes, after the
         checks in the action that asked for it."""
         return self.sudo().write(values)
 
     def _run(self, action, title, body=None):
-        self.check_access("read")
+        self.check_access_rights("read")
+        self.check_access_rule("read")
         for instance in self:
             job = instance.server_id._call("POST", f"{instance._path()}/actions/{action}", body=body or {})
             instance._write_as_module({"status": "busy", "last_job_id": (job or {}).get("id")})
@@ -167,6 +173,8 @@ class SudooInstance(models.Model):
             known = {instance.name: instance for instance in self.with_context(active_test=False).search(
                 [("server_id", "=", server.id)])}
             for data in listed:
+                if not isinstance(data, dict) or not INSTANCE_NAME_RE.match(str(data.get("name") or "")):
+                    continue  # never store what is not an instance of the panel
                 instance = known.pop(data["name"], None) or self.sudo().create({"name": data["name"], "server_id": server.id,
                                                                           "user_id": False, "status": "unknown"})
                 instance._apply(data)

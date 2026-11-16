@@ -1,0 +1,988 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sudoo_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-16 10:21+0000\n"
+"PO-Revision-Date: 2026-11-16 10:21+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance.py:0
+msgid "%(title)s requested by %(user)s."
+msgstr "طلب %(user)s إجراء «%(title)s»."
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_instance_create__lifetime_days
+msgid "0 keeps it until it is deleted by hand."
+msgstr "القيمة 0 تُبقيها حتى تُحذف يدوياً."
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_server__max_lifetime_days
+msgid "0: no limit, and instances may be kept until deleted by hand."
+msgstr "0: بلا حد، ويمكن إبقاء النسخ حتى تُحذف يدوياً."
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_instance_create__version
+msgid "A version name to start with, such as 20.0 (presets)."
+msgstr "اسم إصدار يُبدأ به، مثل 20.0 (قيم مسبقة)."
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__token
+msgid "API token"
+msgstr "رمز API"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__message_needaction
+msgid "Action Needed"
+msgstr "إجراء مطلوب"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__active
+msgid "Active"
+msgstr "نشط"
+
+#. module: sudoo_base
+#: model:res.groups,name:sudoo_base.group_sudoo_manager
+msgid "Administrator"
+msgstr "المسؤول"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server_version__allowed
+msgid "Allowed"
+msgstr "مسموح"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "Allowed: %s."
+msgstr "المسموح: %s."
+
+#. module: sudoo_base
+#: model:res.groups,comment:sudoo_base.group_sudoo_manager
+msgid ""
+"Also connects panels (API token), extends lifetimes and deletes instances."
+msgstr "يربط أيضاً لوحات التحكم (رمز API)، ويمدد مدة البقاء، ويحذف النسخ."
+
+#. module: sudoo_base
+#: model:ir.model.constraint,message:sudoo_base.constraint_sudoo_instance_name_server_unique
+msgid "An instance name is unique per panel."
+msgstr "يجب أن يكون اسم النسخة فريداً في كل لوحة تحكم."
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance.py:0
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_form
+msgid "Back up"
+msgstr "نسخ احتياطي"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__branch
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__branch
+msgid "Branch"
+msgstr "الفرع"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_create_view_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "Choose one of the Odoo versions your administrator allows."
+msgstr "اختر أحد إصدارات Odoo التي يسمح بها المسؤول."
+
+#. module: sudoo_base
+#: model_terms:ir.actions.act_window,help:sudoo_base.action_sudoo_instance
+msgid "Click <b>New instance</b> to create one on your Sudoo.sh panel."
+msgstr ""
+"اضغط على <b>نسخة جديدة</b> لإنشاء نسخة على لوحة تحكم Sudoo.sh الخاصة بك."
+
+#. module: sudoo_base
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__edition__community
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance_create__edition__community
+msgid "Community"
+msgstr "المجتمع"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__company_id
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: sudoo_base
+#: model:ir.ui.menu,name:sudoo_base.menu_sudoo_config
+msgid "Configuration"
+msgstr "التهيئة"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+msgid "Connected"
+msgstr "تم الاتصال"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid "Connection"
+msgstr "الاتصال"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_create_view_form
+msgid "Create"
+msgstr "إنشاء"
+
+#. module: sudoo_base
+#: model:ir.module.module,summary:base.module_sudoo_base
+msgid ""
+"Create and manage Sudoo.sh Odoo instances (demos, tests, training) from "
+"inside Odoo"
+msgstr ""
+"أنشئ نسخ Odoo على Sudoo.sh وأدرها (للعروض التوضيحية والاختبار والتدريب) من داخل Odoo"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid ""
+"Create the token in the panel under <b>API tokens</b>, with the <b>write</b> scope.\n"
+"                        The panel shows the token and its signing secret once: paste both here."
+msgstr ""
+"أنشئ الرمز في لوحة التحكم ضمن <b>API tokens</b> بنطاق <b>write</b>.\n"
+"                        تعرض لوحة التحكم الرمز وسر التوقيع الخاص به مرة واحدة فقط: الصقهما هنا."
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__create_uid
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__create_uid
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__create_uid
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server_version__create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__create_date
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__create_date
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__create_date
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server_version__create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__panel_created_at
+msgid "Created on the panel"
+msgstr "تاريخ الإنشاء على لوحة التحكم"
+
+#. module: sudoo_base
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__status__creating
+msgid "Creating"
+msgstr "قيد الإنشاء"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "Creation requested by %s. The link appears here when it is ready."
+msgstr "طلب %s الإنشاء. سيظهر الرابط هنا عندما تصبح النسخة جاهزة."
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__default_lifetime_days
+msgid "Default lifetime (days)"
+msgstr "مدة البقاء الافتراضية (بالأيام)"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_form
+msgid "Delete"
+msgstr "حذف"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_form
+msgid ""
+"Delete this instance? Odoo, its database and its files are removed; the "
+"panel keeps a backup."
+msgstr ""
+"هل تريد حذف هذه النسخة؟ ستُزال نسخة Odoo وقاعدة بياناتها وملفاتها، وتحتفظ لوحة التحكم بنسخة احتياطية."
+
+#. module: sudoo_base
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__status__deleted
+msgid "Deleted"
+msgstr "محذوفة"
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_instance__lifetime_days
+msgid ""
+"Deleted automatically this many days after its creation (a backup is kept); "
+"0 keeps it."
+msgstr ""
+"تُحذف تلقائياً بعد هذا العدد من الأيام من إنشائها (مع الاحتفاظ بنسخة احتياطية)؛ القيمة 0 تُبقيها."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance.py:0
+msgid "Deletion requested by %s; a backup is taken first."
+msgstr "طلب %s الحذف؛ تُؤخذ نسخة احتياطية أولاً."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__allow_demo_data
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__allow_demo_data
+msgid "Demo data"
+msgstr "بيانات تجريبية"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__display_name
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__display_name
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_mixin__display_name
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__display_name
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server_version__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: sudoo_base
+#: model:ir.model.constraint,message:sudoo_base.constraint_sudoo_server_version_version_unique
+msgid "Each version is listed once per panel."
+msgstr "يُدرج كل إصدار مرة واحدة في كل لوحة تحكم."
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__edition
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__edition
+msgid "Edition"
+msgstr "الإصدار التجاري"
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_instance_create__instance_name
+msgid "Empty: the panel names it after the branch or the version."
+msgstr "إذا تُرك فارغاً، تسمّيها لوحة التحكم باسم الفرع أو الإصدار."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid ""
+"Enter the GitHub repository's address, for example "
+"https://github.com/acme/odoo-addons."
+msgstr "أدخل عنوان مستودع GitHub، مثل https://github.com/acme/odoo-addons."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__edition__enterprise
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance_create__edition__enterprise
+msgid "Enterprise"
+msgstr "المؤسسات"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__enterprise_possible
+msgid "Enterprise Possible"
+msgstr "إصدار المؤسسات متاح"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__allow_enterprise
+msgid "Enterprise edition"
+msgstr "إصدار المؤسسات"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "Enterprise is not available for Odoo %s here."
+msgstr "إصدار المؤسسات غير متاح هنا لـ Odoo %s."
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server_version__enterprise_available
+msgid "Enterprise on the panel"
+msgstr "إصدار المؤسسات على لوحة التحكم"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_form
+msgid "Extend lifetime"
+msgstr "تمديد مدة البقاء"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__message_follower_ids
+msgid "Followers"
+msgstr "المتابعين"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "المتابعين (الشركاء)"
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_instance_create__repository
+msgid "For example https://github.com/acme/odoo-addons"
+msgstr "مثال: https://github.com/acme/odoo-addons"
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_server__url
+msgid "For example https://panel.example.com"
+msgstr "مثال: https://panel.example.com"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__allow_repository
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__allow_repository
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance_create__source__repository
+msgid "From a GitHub repository"
+msgstr "من مستودع GitHub"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "GitHub repositories"
+msgstr "مستودعات GitHub"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__has_message
+msgid "Has Message"
+msgstr "يحتوي على رسالة"
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_server__max_instances_per_user
+msgid ""
+"How many instances one Odoo user may have at a time; 0: no limit. The "
+"panel's own limits apply too."
+msgstr ""
+"عدد النسخ التي يمكن أن يمتلكها مستخدم Odoo واحد في الوقت نفسه؛ 0: بلا حد. تُطبَّق حدود لوحة التحكم أيضاً."
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__id
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__id
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_mixin__id
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__id
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server_version__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_instance__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "إذا كان محددًا، فهناك رسائل جديدة عليك رؤيتها."
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_instance__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr "إذا كان محددًا، فقد حدث خطأ في تسليم بعض الرسائل."
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__install_modules
+msgid "Install the repository's modules"
+msgstr "تثبيت تطبيقات المستودع"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__instance_ids
+msgid "Instance"
+msgstr "النسخة"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__instance_count
+msgid "Instance Count"
+msgstr "عدد النسخ"
+
+#. module: sudoo_base
+#: model:ir.actions.act_window,name:sudoo_base.action_sudoo_instance
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_mixin__sudoo_instance_count
+#: model:ir.ui.menu,name:sudoo_base.menu_sudoo_instances
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid "Instances"
+msgstr "النسخ"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__max_instances_per_user
+msgid "Instances per person"
+msgstr "عدد النسخ لكل شخص"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__message_is_follower
+msgid "Is Follower"
+msgstr "متابع"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid "Kinds of instance"
+msgstr "أنواع النسخ"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__last_job_id
+msgid "Last Job"
+msgstr "آخر مهمة"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__write_uid
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__write_uid
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__write_uid
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server_version__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__write_date
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__write_date
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__write_date
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server_version__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_form
+msgid "Lifecycle"
+msgstr "دورة الحياة"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__lifetime_days
+msgid "Lifetime (days)"
+msgstr "مدة البقاء (بالأيام)"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__lifetime_days
+msgid "Lifetime Days"
+msgstr "أيام البقاء"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid "Lifetime and limits"
+msgstr "مدة البقاء والحدود"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance.py:0
+msgid "Lifetime extended to %s days."
+msgstr "مُددت مدة البقاء إلى %s يوماً."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "Lifetime: at most %s days."
+msgstr "مدة البقاء: %s يوماً كحد أقصى."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "Lifetime: no limit; 0 keeps the instance."
+msgstr "مدة البقاء: بلا حد؛ القيمة 0 تُبقي النسخة."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+msgid "Lifetimes and limits cannot be negative."
+msgstr "لا يمكن أن تكون مدد البقاء والحدود سالبة."
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__url
+msgid "Link"
+msgstr "الرابط"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_form
+msgid "Linked record"
+msgstr "السجل المرتبط"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__demo_data
+msgid "Load demo data"
+msgstr "تحميل البيانات التجريبية"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__max_lifetime_days
+msgid "Longest lifetime (days)"
+msgstr "أطول مدة بقاء (بالأيام)"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__message_has_error
+msgid "Message Delivery error"
+msgstr "خطأ في تسليم الرسائل"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__message_ids
+msgid "Messages"
+msgstr "الرسائل"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_search
+msgid "Mine"
+msgstr "نسخي"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__name
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__instance_name
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: sudoo_base
+#: model:ir.model,name:sudoo_base.model_sudoo_instance_create
+msgid "New Sudoo.sh instance"
+msgstr "نسخة Sudoo.sh جديدة"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance_mixin.py:0
+#: model:ir.actions.act_window,name:sudoo_base.action_sudoo_instance_create
+#: model:ir.ui.menu,name:sudoo_base.menu_sudoo_new_instance
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_create_view_form
+msgid "New instance"
+msgstr "نسخة جديدة"
+
+#. module: sudoo_base
+#: model:res.groups.privilege,placeholder:sudoo_base.res_groups_privilege_sudoo
+msgid "No"
+msgstr "لا"
+
+#. module: sudoo_base
+#: model_terms:ir.actions.act_window,help:sudoo_base.action_sudoo_instance
+msgid "No instances yet"
+msgstr "لا توجد نسخ بعد"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "Not allowed by your administrator: %s."
+msgstr "غير مسموح من قِبل المسؤول: %s."
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_search
+msgid "Not deleted"
+msgstr "غير محذوفة"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__message_needaction_counter
+msgid "Number of Actions"
+msgstr "عدد الإجراءات"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__message_has_error_counter
+msgid "Number of errors"
+msgstr "عدد الأخطاء"
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_instance__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "عدد الرسائل التي تتطلب اتخاذ إجراء"
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_instance__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "عدد الرسائل الحادث بها خطأ في التسليم"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_form
+msgid "Odoo"
+msgstr "Odoo"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__odoo_version
+msgid "Odoo Version"
+msgstr "إصدار Odoo"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__version_id
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_search
+msgid "Odoo version"
+msgstr "إصدار Odoo"
+
+#. module: sudoo_base
+#: model:ir.model,name:sudoo_base.model_sudoo_server_version
+msgid "Odoo version offered by a Sudoo.sh panel"
+msgstr "إصدار Odoo الذي توفره لوحة تحكم Sudoo.sh"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__version_ids
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid "Odoo versions"
+msgstr "إصدارات Odoo"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+msgid "Odoo versions offered: %s"
+msgstr "إصدارات Odoo المتوفرة: %s"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "Odoo versions: %s."
+msgstr "إصدارات Odoo: %s."
+
+#. module: sudoo_base
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__status__online
+msgid "Online"
+msgstr "تعمل"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance.py:0
+msgid "Only Sudoo.sh administrators can do this."
+msgstr "يمكن لمسؤولي Sudoo.sh فقط القيام بذلك."
+
+#. module: sudoo_base
+#: model:ir.model.fields,help:sudoo_base.field_sudoo_server__allow_enterprise
+msgid "Only for versions where the panel has Enterprise."
+msgstr "فقط للإصدارات التي يتوفر لها إصدار المؤسسات على لوحة التحكم."
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_form
+msgid "Open"
+msgstr "فتح"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid "Our Sudoo.sh panel"
+msgstr "لوحة تحكم Sudoo.sh الخاصة بنا"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__server_id
+msgid "Panel"
+msgstr "لوحة التحكم"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__panel_created_by
+msgid "Panel Created By"
+msgstr "أنشأها على لوحة التحكم"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__url
+msgid "Panel address"
+msgstr "عنوان لوحة التحكم"
+
+#. module: sudoo_base
+#: model:ir.actions.act_window,name:sudoo_base.action_sudoo_server
+#: model:ir.ui.menu,name:sudoo_base.menu_sudoo_servers
+msgid "Panels"
+msgstr "لوحات التحكم"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance.py:0
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_form
+msgid "Pause"
+msgstr "إيقاف مؤقت"
+
+#. module: sudoo_base
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__status__paused
+msgid "Paused"
+msgstr "متوقفة مؤقتاً"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__allow_plain
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__allow_plain
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__source__plain
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance_create__source__plain
+msgid "Plain Odoo"
+msgstr "Odoo فقط"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__policy_html
+msgid "Policy Html"
+msgstr "السياسة (HTML)"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__version
+msgid "Preferred version"
+msgstr "الإصدار المفضل"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__rating_ids
+msgid "Ratings"
+msgstr "التقييمات"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid "Read instances now"
+msgstr "قراءة النسخ الآن"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance.py:0
+msgid "Ready: %s"
+msgstr "جاهزة: %s"
+
+#. module: sudoo_base
+#: model:ir.model,name:sudoo_base.model_sudoo_instance_mixin
+msgid "Records that can have Sudoo.sh instances"
+msgstr "السجلات التي يمكن أن تكون لها نسخ Sudoo.sh"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__repository
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__repository
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__source__repository
+msgid "Repository"
+msgstr "المستودع"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__user_id
+msgid "Requested by"
+msgstr "مقدم الطلب"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__res_id
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__res_id
+msgid "Res"
+msgstr "معرف السجل"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__res_model
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__res_model
+msgid "Res Model"
+msgstr "نموذج السجل"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance.py:0
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_form
+msgid "Restart"
+msgstr "إعادة التشغيل"
+
+#. module: sudoo_base
+#: model:res.groups,comment:sudoo_base.group_sudoo_user
+msgid ""
+"Sees the company's instances, creates new ones and starts, pauses, restarts "
+"and backs them up."
+msgstr ""
+"يرى نسخ الشركة، وينشئ نسخاً جديدة، ويشغّلها ويوقفها مؤقتاً ويعيد تشغيلها ويأخذ نسخاً احتياطية منها."
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__sequence
+msgid "Sequence"
+msgstr "التسلسل"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__server_id
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server_version__server_id
+msgid "Server"
+msgstr "الخادم"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server__secret
+msgid "Signing secret"
+msgstr "سر التوقيع"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__source
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_create__source
+msgid "Source"
+msgstr "المصدر"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance.py:0
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_form
+msgid "Start"
+msgstr "تشغيل"
+
+#. module: sudoo_base
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__status__starting
+msgid "Starting"
+msgstr "قيد البدء"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance__status
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_view_search
+msgid "Status"
+msgstr "الحالة"
+
+#. module: sudoo_base
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__status__stopped
+msgid "Stopped"
+msgstr "متوقفة"
+
+#. module: sudoo_base
+#: model:ir.ui.menu,name:sudoo_base.menu_sudoo_root
+#: model:res.groups.privilege,name:sudoo_base.res_groups_privilege_sudoo
+msgid "Sudoo.sh"
+msgstr "Sudoo.sh"
+
+#. module: sudoo_base
+#: model:ir.model,name:sudoo_base.model_sudoo_instance
+msgid "Sudoo.sh instance"
+msgstr "نسخة Sudoo.sh"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_instance_mixin__sudoo_instance_ids
+msgid "Sudoo.sh instances"
+msgstr "نسخ Sudoo.sh"
+
+#. module: sudoo_base
+#: model:ir.model,name:sudoo_base.model_sudoo_server
+msgid "Sudoo.sh panel"
+msgstr "لوحة تحكم Sudoo.sh"
+
+#. module: sudoo_base
+#: model:ir.module.module,shortdesc:base.module_sudoo_base
+msgid "Sudoo.sh – Odoo Instance Manager"
+msgstr "Sudoo.sh – مدير نسخ Odoo"
+
+#. module: sudoo_base
+#: model:ir.actions.server,name:sudoo_base.ir_cron_sudoo_sync_ir_actions_server
+msgid "Sudoo.sh: read instances from the panels"
+msgstr "Sudoo.sh: قراءة النسخ من لوحات التحكم"
+
+#. module: sudoo_base
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__status__switched_off
+msgid "Switched off"
+msgstr "مطفأة"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid "Test connection"
+msgstr "اختبار الاتصال"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance_mixin.py:0
+msgid "The Sudoo.sh instance %(name)s is ready: %(url)s"
+msgstr "نسخة Sudoo.sh %(name)s جاهزة: %(url)s"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+msgid "The default lifetime must be between 1 day and the longest lifetime."
+msgstr "يجب أن تكون مدة البقاء الافتراضية بين يوم واحد وأطول مدة بقاء."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "The lifetime cannot be negative."
+msgstr "لا يمكن أن تكون مدة البقاء سالبة."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "The lifetime must be between 1 and %s days."
+msgstr "يجب أن تكون مدة البقاء بين 1 و%s يوماً."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+msgid ""
+"The panel address must start with https:// (http:// only for localhost)."
+msgstr ""
+"يجب أن يبدأ عنوان لوحة التحكم بـ https:// (يُسمح بـ http:// لـ localhost فقط)."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "The panel can take %(left)s more of its %(max)s instances."
+msgstr "يمكن للوحة التحكم استيعاب %(left)s نسخة إضافية من أصل %(max)s."
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid ""
+"The panel's own settings and limits apply too: these switches can only narrow them.\n"
+"                                <b>Test connection</b> reads the versions the panel offers."
+msgstr ""
+"تُطبَّق إعدادات لوحة التحكم وحدودها الخاصة أيضاً: يمكن لهذه الخيارات تضييقها فقط.\n"
+"                                يقرأ <b>اختبار الاتصال</b> الإصدارات التي توفرها لوحة التحكم."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_instance.py:0
+msgid "This instance has no link yet."
+msgstr "لا يوجد رابط لهذه النسخة بعد."
+
+#. module: sudoo_base
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__status__unknown
+msgid "Unknown"
+msgstr "غير معروفة"
+
+#. module: sudoo_base
+#: model:res.groups,name:sudoo_base.group_sudoo_user
+msgid "User"
+msgstr "المستخدم"
+
+#. module: sudoo_base
+#: model:ir.model.fields,field_description:sudoo_base.field_sudoo_server_version__name
+msgid "Version"
+msgstr "الإصدار"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid "What users may create"
+msgstr "ما يمكن للمستخدمين إنشاؤه"
+
+#. module: sudoo_base
+#: model:ir.model.fields.selection,name:sudoo_base.selection__sudoo_instance__status__busy
+msgid "Working"
+msgstr "قيد التنفيذ"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid ""
+"You already have %s instances, the most one person may have. Delete one "
+"first."
+msgstr ""
+"لديك بالفعل %s نسخ، وهو الحد الأقصى المسموح للشخص الواحد. احذف إحداها أولاً."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "You have %(mine)s of the %(max)s instances one person may have."
+msgstr "لديك %(mine)s من أصل %(max)s نسخ مسموح بها للشخص الواحد."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "You need the Sudoo.sh User access to create instances."
+msgstr "تحتاج إلى صلاحية مستخدم Sudoo.sh لإنشاء النسخ."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "Your administrator does not allow demo data."
+msgstr "لا يسمح المسؤول بالبيانات التجريبية."
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "Your administrator does not allow this kind of instance on %s."
+msgstr "لا يسمح المسؤول بهذا النوع من النسخ على %s."
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_create_view_form
+msgid "https://github.com/acme/odoo-addons"
+msgstr "https://github.com/acme/odoo-addons"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_server_view_form
+msgid "https://panel.example.com"
+msgstr "https://panel.example.com"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "new instance"
+msgstr "نسخة جديدة"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/models/sudoo_server.py:0
+msgid "none"
+msgstr "لا شيء"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "none allowed"
+msgstr "لا يوجد إصدار مسموح"
+
+#. module: sudoo_base
+#. odoo-python
+#: code:addons/sudoo_base/wizard/sudoo_instance_create.py:0
+msgid "nothing"
+msgstr "لا شيء"
+
+#. module: sudoo_base
+#: model_terms:ir.ui.view,arch_db:sudoo_base.sudoo_instance_create_view_form
+msgid "sales-demo"
+msgstr "sales-demo"
