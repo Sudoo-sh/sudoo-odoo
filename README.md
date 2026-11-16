@@ -7,6 +7,16 @@
 <p align="center">Create and manage your <a href="https://github.com/Sudoo-sh/sudoo.sh">Sudoo.sh</a> Odoo instances
 (demos, test branches, training) from inside your company's own Odoo.</p>
 
+<p align="center">
+  <a href="https://github.com/Sudoo-sh/sudoo-odoo/actions/workflows/ci.yml?query=branch%3A18.0"><img alt="CI" src="https://github.com/Sudoo-sh/sudoo-odoo/actions/workflows/ci.yml/badge.svg?branch=18.0"></a>
+  <img alt="Odoo 17.0 | 18.0 | 19.0 | 20.0" src="https://img.shields.io/badge/Odoo-17.0%20%7C%2018.0%20%7C%2019.0%20%7C%2020.0-714B67">
+  <a href="LICENSE"><img alt="License: OPL-1" src="https://img.shields.io/badge/license-OPL--1-4A2F43"></a>
+  <img alt="Price: free" src="https://img.shields.io/badge/price-free-2F6B4F">
+  <img alt="Languages: English, Arabic" src="https://img.shields.io/badge/languages-English%20%7C%20%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-5E5560">
+  <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000"></a>
+  <a href="https://github.com/astral-sh/ruff"><img alt="Linted with ruff" src="https://img.shields.io/badge/lint-ruff-D7FF64"></a>
+</p>
+
 > [!NOTE]
 > **Proprietary software of Sudoo.sh, free to use.** Licensed under the Odoo Proprietary License v1.0
 > ([LICENSE](LICENSE), [COPYRIGHT](COPYRIGHT)). You may install and use these modules and build your own modules
@@ -118,6 +128,16 @@ built exactly this way; read them as examples.
 
 Your own module may use any licence compatible with the Odoo Proprietary License (LGPL, MIT or proprietary), as
 long as it does not copy code from these modules.
+
+## Code style
+
+The code is formatted with black and checked with ruff (line length 120), and XML and YAML files are checked, on
+every push and pull request. Run the same checks before you commit:
+
+```bash
+pip install pre-commit
+pre-commit run --all-files
+```
 
 ## Versions
 

@@ -48,6 +48,7 @@ what happened. Security problems: never in an issue; follow the
   (XML: the same text in a comment).
 - Follow Odoo's guidelines: `invisible="..."` expressions (no `attrs`), translatable strings with `_()`, no SQL
   where the ORM does it, access rules for every new model.
+- Style: `pre-commit run --all-files` must pass (black, ruff, XML and YAML checks; CI runs it too).
 - Tests: `odoo -d test -i <module> --test-enable --test-tags /<module> --stop-after-init` must pass.
 - Plain, direct wording in labels and messages; say what the user can do.
 

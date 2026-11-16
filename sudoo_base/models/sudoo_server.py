@@ -26,8 +26,11 @@ class SudooServer(models.Model):
     token = fields.Char(string="API token", groups="sudoo_base.group_sudoo_manager", copy=False)
     secret = fields.Char(string="Signing secret", groups="sudoo_base.group_sudoo_manager", copy=False)
     company_id = fields.Many2one("res.company", default=lambda self: self.env.company)
-    acting_for_unsupported = fields.Boolean(readonly=True, copy=False, help="Set by the module when the panel is "
-                                            "older than the signed X-Sudoo-Acting-For header.")
+    acting_for_unsupported = fields.Boolean(
+        readonly=True,
+        copy=False,
+        help="Set by the module when the panel is " "older than the signed X-Sudoo-Acting-For header.",
+    )
     instance_ids = fields.One2many("sudoo.instance", "server_id")
     instance_count = fields.Integer(compute="_compute_instance_count")
 
@@ -35,15 +38,21 @@ class SudooServer(models.Model):
     version_ids = fields.One2many("sudoo.server.version", "server_id", string="Odoo versions")
     allow_plain = fields.Boolean(string="Plain Odoo", default=True)
     allow_repository = fields.Boolean(string="From a GitHub repository", default=True)
-    allow_enterprise = fields.Boolean(string="Enterprise edition", default=True,
-                                      help="Only for versions where the panel has Enterprise.")
+    allow_enterprise = fields.Boolean(
+        string="Enterprise edition", default=True, help="Only for versions where the panel has Enterprise."
+    )
     allow_demo_data = fields.Boolean(string="Demo data", default=True)
     default_lifetime_days = fields.Integer(string="Default lifetime (days)", default=14)
-    max_lifetime_days = fields.Integer(string="Longest lifetime (days)", default=90,
-                                       help="0: no limit, and instances may be kept until deleted by hand.")
-    max_instances_per_user = fields.Integer(string="Instances per person", default=0,
-                                            help="How many instances one Odoo user may have at a time; 0: no limit. "
-                                                 "The panel's own limits apply too.")
+    max_lifetime_days = fields.Integer(
+        string="Longest lifetime (days)",
+        default=90,
+        help="0: no limit, and instances may be kept until deleted by hand.",
+    )
+    max_instances_per_user = fields.Integer(
+        string="Instances per person",
+        default=0,
+        help="How many instances one Odoo user may have at a time; 0: no limit. " "The panel's own limits apply too.",
+    )
 
     @api.depends("instance_ids")
     def _compute_instance_count(self):
@@ -87,7 +96,9 @@ class SudooServer(models.Model):
                 if error.status != 401 or self.sudo().acting_for_unsupported:
                     raise
                 # a panel from before the signed acting-for line refuses the signature: once without it, and remember
-                answer = PanelClient(self.sudo().url, self.sudo().token, self.sudo().secret).request(method, path, **kwargs)
+                answer = PanelClient(self.sudo().url, self.sudo().token, self.sudo().secret).request(
+                    method, path, **kwargs
+                )
                 self.sudo().acting_for_unsupported = True
                 return answer
         except PanelError as error:

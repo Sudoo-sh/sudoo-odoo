@@ -1,0 +1,24 @@
+# Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details.
+# Run: pre-commit run --all-files   (CI runs the same)
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-xml
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=1200"]
+      - id: end-of-file-fixer
+        exclude: \.(po|pot|svg)$
+      - id: trailing-whitespace
+        exclude: \.(po|pot)$
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 26.1.0
+    hooks:
+      - id: black
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.4
+    hooks:
+      - id: ruff-check
+        args: ["--fix"]
