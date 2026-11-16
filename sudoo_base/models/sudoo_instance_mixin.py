@@ -19,14 +19,15 @@ class SudooInstanceMixin(models.AbstractModel):
     _name = "sudoo.instance.mixin"
     _description = "Records that can have Sudoo.sh instances"
 
-    sudoo_instance_ids = fields.One2many("sudoo.instance", compute="_compute_sudoo_instances",
-                                         string="Sudoo.sh instances")
+    sudoo_instance_ids = fields.One2many(
+        "sudoo.instance", compute="_compute_sudoo_instances", string="Sudoo.sh instances"
+    )
     sudoo_instance_count = fields.Integer(compute="_compute_sudoo_instances", string="Instances")
 
     def _compute_sudoo_instances(self):
         found = self.env["sudoo.instance"].search([("res_model", "=", self._name), ("res_id", "in", self.ids)])
         for record in self:
-            mine = found.filtered(lambda instance: instance.res_id == record.id)
+            mine = found.filtered(lambda instance, record_id=record.id: instance.res_id == record_id)
             record.sudoo_instance_ids = mine
             record.sudoo_instance_count = len(mine)
 
@@ -43,8 +44,9 @@ class SudooInstanceMixin(models.AbstractModel):
         in the record's chatter when it has one. Override it to e-mail a customer, move a stage..."""
         self.ensure_one()
         if hasattr(self, "message_post"):
-            self.message_post(body=_("The Sudoo.sh instance %(name)s is ready: %(url)s",
-                                     name=instance.name, url=instance.url or "-"))
+            self.message_post(
+                body=_("The Sudoo.sh instance %(name)s is ready: %(url)s", name=instance.name, url=instance.url or "-")
+            )
 
     # ------------------------------------------------------------------ buttons
 

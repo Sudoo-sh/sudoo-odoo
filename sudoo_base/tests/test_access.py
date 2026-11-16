@@ -26,11 +26,19 @@ class TestAccess(TransactionCase):
         super().setUpClass()
         cls.env["res.lang"]._activate_lang("en_US")  # messages are checked in English, in any database
         cls.env = cls.env(context=dict(cls.env.context, lang="en_US"))
-        cls.server = cls.env["sudoo.server"].create({
-            "name": "Panel", "url": "https://panel.example.com", "token": "t", "secret": "s",
-            "allow_repository": False, "allow_demo_data": False, "max_lifetime_days": 30, "default_lifetime_days": 7,
-            "max_instances_per_user": 1,
-        })
+        cls.server = cls.env["sudoo.server"].create(
+            {
+                "name": "Panel",
+                "url": "https://panel.example.com",
+                "token": "t",
+                "secret": "s",
+                "allow_repository": False,
+                "allow_demo_data": False,
+                "max_lifetime_days": 30,
+                "default_lifetime_days": 7,
+                "max_instances_per_user": 1,
+            }
+        )
         with patch.object(PanelClient, "request", side_effect=lambda self, *a, **k: fake_panel(*a, **k), autospec=True):
             cls.server._refresh_versions()
         cls.server.version_ids.filtered(lambda line: line.name == "19.0").allowed = False
@@ -71,15 +79,24 @@ class TestAccess(TransactionCase):
             ({"demo_data": True}, "does not allow demo data"),
             ({"lifetime_days": 0}, "between 1 and 30"),
             ({"lifetime_days": 31}, "between 1 and 30"),
-            ({"version_id": self.server.version_ids.filtered(lambda l: l.name == "19.0").id}, "versions your administrator allows"),
+            (
+                {"version_id": self.server.version_ids.filtered(lambda line: line.name == "19.0").id},
+                "versions your administrator allows",
+            ),
         ):
             with self.subTest(values=values):
                 attempt = wizard
                 attempt.write(values)
                 with self.assertRaisesRegex(UserError, message):
                     self.run_create(attempt)
-                attempt.write({"source": "plain", "demo_data": False, "lifetime_days": 7,
-                               "version_id": self.server.version_ids.filtered(lambda l: l.name == "20.0").id})
+                attempt.write(
+                    {
+                        "source": "plain",
+                        "demo_data": False,
+                        "lifetime_days": 7,
+                        "version_id": self.server.version_ids.filtered(lambda line: line.name == "20.0").id,
+                    }
+                )
 
     def test_one_instance_per_person(self):
         with patch.object(PanelClient, "request", side_effect=lambda self, *a, **k: fake_panel(*a, **k), autospec=True):

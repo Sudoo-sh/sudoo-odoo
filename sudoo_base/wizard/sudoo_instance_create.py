@@ -16,17 +16,20 @@ class SudooInstanceCreate(models.TransientModel):
     _name = "sudoo.instance.create"
     _description = "New Sudoo.sh instance"
 
-    server_id = fields.Many2one("sudoo.server", string="Panel", required=True,
-                                default=lambda self: self.env["sudoo.server"].search([], limit=1))
+    server_id = fields.Many2one(
+        "sudoo.server", string="Panel", required=True, default=lambda self: self.env["sudoo.server"].search([], limit=1)
+    )
     source = fields.Selection([("plain", "Plain Odoo"), ("repository", "From a GitHub repository")], required=True)
     repository = fields.Char(help="For example https://github.com/acme/odoo-addons")
     branch = fields.Char(default="main")
     instance_name = fields.Char(string="Name", help="Empty: the panel names it after the branch or the version.")
     version = fields.Char(string="Preferred version", help="A version name to start with, such as 20.0 (presets).")
-    version_id = fields.Many2one("sudoo.server.version", string="Odoo version",
-                                 domain="[('server_id', '=', server_id), ('allowed', '=', True)]")
-    edition = fields.Selection([("community", "Community"), ("enterprise", "Enterprise")],
-                               default="community", required=True)
+    version_id = fields.Many2one(
+        "sudoo.server.version", string="Odoo version", domain="[('server_id', '=', server_id), ('allowed', '=', True)]"
+    )
+    edition = fields.Selection(
+        [("community", "Community"), ("enterprise", "Enterprise")], default="community", required=True
+    )
     lifetime_days = fields.Integer(string="Lifetime (days)", help="0 keeps it until it is deleted by hand.")
     demo_data = fields.Boolean(string="Load demo data")
     install_modules = fields.Boolean(string="Install the repository's modules", default=True)
@@ -66,8 +69,11 @@ class SudooInstanceCreate(models.TransientModel):
 
     def _allowed_sources(self):
         server = self.server_id
-        return [source for source, allowed in (("plain", server.allow_plain), ("repository", server.allow_repository))
-                if allowed]
+        return [
+            source
+            for source, allowed in (("plain", server.allow_plain), ("repository", server.allow_repository))
+            if allowed
+        ]
 
     @api.depends("server_id", "version_id")
     def _compute_policy(self):
@@ -80,20 +86,32 @@ class SudooInstanceCreate(models.TransientModel):
         """What the administrator allows and what the panel still accepts, in a few lines for the form."""
         server = self.server_id
         allowed, refused = [], []
-        for label, ok in ((_("Plain Odoo"), server.allow_plain), (_("GitHub repositories"), server.allow_repository),
-                          (_("Enterprise"), server.allow_enterprise), (_("Demo data"), server.allow_demo_data)):
+        for label, ok in (
+            (_("Plain Odoo"), server.allow_plain),
+            (_("GitHub repositories"), server.allow_repository),
+            (_("Enterprise"), server.allow_enterprise),
+            (_("Demo data"), server.allow_demo_data),
+        ):
             (allowed if ok else refused).append(label)
         versions = server.version_ids.filtered("allowed").mapped("name")
         lines = [_("Allowed: %s.", ", ".join(allowed) or _("nothing"))]
         if refused:
             lines.append(_("Not allowed by your administrator: %s.", ", ".join(refused)))
         lines.append(_("Odoo versions: %s.", ", ".join(versions) or _("none allowed")))
-        lines.append(_("Lifetime: at most %s days.", server.max_lifetime_days) if server.max_lifetime_days
-                     else _("Lifetime: no limit; 0 keeps the instance."))
+        lines.append(
+            _("Lifetime: at most %s days.", server.max_lifetime_days)
+            if server.max_lifetime_days
+            else _("Lifetime: no limit; 0 keeps the instance.")
+        )
         if server.max_instances_per_user:
             mine = self.env["sudoo.instance"].search_count(self._own_open_domain())
-            lines.append(_("You have %(mine)s of the %(max)s instances one person may have.",
-                           mine=mine, max=server.max_instances_per_user))
+            lines.append(
+                _(
+                    "You have %(mine)s of the %(max)s instances one person may have.",
+                    mine=mine,
+                    max=server.max_instances_per_user,
+                )
+            )
         quota = self._panel_quota()
         if quota:
             lines.append(quota)
@@ -107,12 +125,17 @@ class SudooInstanceCreate(models.TransientModel):
             return ""
         if usage.get("max_instances"):
             left = max(usage["max_instances"] - usage.get("instances", 0), 0)
-            return _("The panel can take %(left)s more of its %(max)s instances.", left=left, max=usage["max_instances"])
+            return _(
+                "The panel can take %(left)s more of its %(max)s instances.", left=left, max=usage["max_instances"]
+            )
         return ""
 
     def _own_open_domain(self):
-        return [("server_id", "=", self.server_id.id), ("user_id", "=", self.env.user.id),
-                ("status", "not in", ("deleted",))]
+        return [
+            ("server_id", "=", self.server_id.id),
+            ("user_id", "=", self.env.user.id),
+            ("status", "not in", ("deleted",)),
+        ]
 
     def _check_policy(self):
         """Refuse anything the administrator does not allow, whatever the form sent."""
@@ -122,21 +145,36 @@ class SudooInstanceCreate(models.TransientModel):
             raise AccessError(_("You need the Sudoo.sh User access to create instances."))
         if self.source not in self._allowed_sources():
             raise UserError(_("Your administrator does not allow this kind of instance on %s.", server.name))
-        if self.source == "repository" and not (self.repository or "").startswith(("https://github.com/", "git@github.com:")):
-            raise UserError(_("Enter the GitHub repository's address, for example https://github.com/acme/odoo-addons."))
+        if self.source == "repository" and not (self.repository or "").startswith(
+            ("https://github.com/", "git@github.com:")
+        ):
+            raise UserError(
+                _("Enter the GitHub repository's address, for example https://github.com/acme/odoo-addons.")
+            )
         if not self.version_id or self.version_id.server_id != server or not self.version_id.allowed:
             raise UserError(_("Choose one of the Odoo versions your administrator allows."))
         if self.edition == "enterprise" and not (server.allow_enterprise and self.version_id.enterprise_available):
             raise UserError(_("Enterprise is not available for Odoo %s here.", self.version_id.name))
         if self.demo_data and not server.allow_demo_data:
             raise UserError(_("Your administrator does not allow demo data."))
-        if self.lifetime_days < 0 or (server.max_lifetime_days and not 0 < self.lifetime_days <= server.max_lifetime_days):
-            raise UserError(_("The lifetime must be between 1 and %s days.", server.max_lifetime_days)
-                            if server.max_lifetime_days else _("The lifetime cannot be negative."))
-        if server.max_instances_per_user and self.env["sudoo.instance"].search_count(
-                self._own_open_domain()) >= server.max_instances_per_user:
-            raise UserError(_("You already have %s instances, the most one person may have. Delete one first.",
-                              server.max_instances_per_user))
+        if self.lifetime_days < 0 or (
+            server.max_lifetime_days and not 0 < self.lifetime_days <= server.max_lifetime_days
+        ):
+            raise UserError(
+                _("The lifetime must be between 1 and %s days.", server.max_lifetime_days)
+                if server.max_lifetime_days
+                else _("The lifetime cannot be negative.")
+            )
+        if (
+            server.max_instances_per_user
+            and self.env["sudoo.instance"].search_count(self._own_open_domain()) >= server.max_instances_per_user
+        ):
+            raise UserError(
+                _(
+                    "You already have %s instances, the most one person may have. Delete one first.",
+                    server.max_instances_per_user,
+                )
+            )
 
     # ------------------------------------------------------------------ creating
 
@@ -152,8 +190,11 @@ class SudooInstanceCreate(models.TransientModel):
         if name:
             body["name"] = name
         if self.source == "repository":
-            body.update(repo=self.repository.strip(), branch=(self.branch or "main").strip(),
-                        install_modules=self.install_modules)
+            body.update(
+                repo=self.repository.strip(),
+                branch=(self.branch or "main").strip(),
+                install_modules=self.install_modules,
+            )
         return body
 
     def action_create(self):
@@ -161,22 +202,34 @@ class SudooInstanceCreate(models.TransientModel):
         self._check_policy()
         job = self.server_id._call("POST", "/instances", body=self._panel_body()) or {}
         # users only read instances; the record is written by the module, for the user who asked
-        instance = self.env["sudoo.instance"].sudo().create({
-            "name": job.get("instance") or self.instance_name or _("new instance"),
-            "server_id": self.server_id.id,
-            "user_id": self.env.user.id,
-            "status": "creating",
-            "last_job_id": job.get("id"),
-            "odoo_version": self.version_id.name,
-            "edition": self.edition,
-            "source": self.source,
-            "repository": self.repository if self.source == "repository" else False,
-            "branch": self.branch if self.source == "repository" else False,
-            "lifetime_days": self.lifetime_days,
-            "res_model": self.res_model or False,
-            "res_id": self.res_id or False,
-        })
-        instance.message_post(body=_("Creation requested by %s. The link appears here when it is ready.",
-                                     self.env.user.name))
-        return {"type": "ir.actions.act_window", "res_model": "sudoo.instance", "res_id": instance.id,
-                "view_mode": "form", "target": "current"}
+        instance = (
+            self.env["sudoo.instance"]
+            .sudo()
+            .create(
+                {
+                    "name": job.get("instance") or self.instance_name or _("new instance"),
+                    "server_id": self.server_id.id,
+                    "user_id": self.env.user.id,
+                    "status": "creating",
+                    "last_job_id": job.get("id"),
+                    "odoo_version": self.version_id.name,
+                    "edition": self.edition,
+                    "source": self.source,
+                    "repository": self.repository if self.source == "repository" else False,
+                    "branch": self.branch if self.source == "repository" else False,
+                    "lifetime_days": self.lifetime_days,
+                    "res_model": self.res_model or False,
+                    "res_id": self.res_id or False,
+                }
+            )
+        )
+        instance.message_post(
+            body=_("Creation requested by %s. The link appears here when it is ready.", self.env.user.name)
+        )
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "sudoo.instance",
+            "res_id": instance.id,
+            "view_mode": "form",
+            "target": "current",
+        }
