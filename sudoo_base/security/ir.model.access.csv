@@ -1,6 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_sudoo_server_user,sudoo.server user,model_sudoo_server,group_sudoo_user,1,0,0,0
 access_sudoo_server_manager,sudoo.server manager,model_sudoo_server,group_sudoo_manager,1,1,1,1
-access_sudoo_instance_user,sudoo.instance user,model_sudoo_instance,group_sudoo_user,1,1,1,0
+access_sudoo_server_version_user,sudoo.server.version user,model_sudoo_server_version,group_sudoo_user,1,0,0,0
+access_sudoo_server_version_manager,sudoo.server.version manager,model_sudoo_server_version,group_sudoo_manager,1,1,1,1
+access_sudoo_instance_user,sudoo.instance user (the module writes),model_sudoo_instance,group_sudoo_user,1,0,0,0
 access_sudoo_instance_manager,sudoo.instance manager,model_sudoo_instance,group_sudoo_manager,1,1,1,1
 access_sudoo_instance_create_user,sudoo.instance.create user,model_sudoo_instance_create,group_sudoo_user,1,1,1,1

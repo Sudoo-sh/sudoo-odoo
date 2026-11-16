@@ -36,14 +36,40 @@
                             <field name="url" placeholder="https://panel.example.com"/>
                             <field name="token" password="True"/>
                             <field name="secret" password="True"/>
-                        </group>
-                        <group string="Defaults for new instances">
-                            <field name="default_version"/>
-                            <field name="default_lifetime_days"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="active" invisible="1"/>
                         </group>
+                        <group string="Lifetime and limits">
+                            <field name="default_lifetime_days"/>
+                            <field name="max_lifetime_days"/>
+                            <field name="max_instances_per_user"/>
+                        </group>
                     </group>
+                    <notebook>
+                        <page string="What users may create" name="policy">
+                            <group>
+                                <group string="Kinds of instance">
+                                    <field name="allow_plain"/>
+                                    <field name="allow_repository"/>
+                                    <field name="allow_enterprise"/>
+                                    <field name="allow_demo_data"/>
+                                </group>
+                                <group string="Odoo versions">
+                                    <field name="version_ids" nolabel="1" colspan="2" create="false" delete="false">
+                                        <list editable="bottom" create="false" delete="false">
+                                            <field name="name"/>
+                                            <field name="enterprise_available"/>
+                                            <field name="allowed" widget="boolean_toggle"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </group>
+                            <div class="text-muted">
+                                The panel's own settings and limits apply too: these switches can only narrow them.
+                                <b>Test connection</b> reads the versions the panel offers.
+                            </div>
+                        </page>
+                    </notebook>
                     <div class="text-muted">
                         Create the token in the panel under <b>API tokens</b>, with the <b>write</b> scope.
                         The panel shows the token and its signing secret once: paste both here.

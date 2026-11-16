@@ -37,6 +37,7 @@ class SudooInstance(models.Model):
     _description = "Sudoo.sh instance"
     _inherit = ["mail.thread"]
     _order = "create_date desc, id desc"
+    _mail_post_access = "read"  # users only read instances; the module writes them (see _write_as_module)
 
     name = fields.Char(required=True, readonly=True, tracking=True)
     server_id = fields.Many2one("sudoo.server", required=True, readonly=True, ondelete="cascade")
@@ -66,16 +67,22 @@ class SudooInstance(models.Model):
         self.ensure_one()
         return f"/instances/{self.name}"
 
+    def _write_as_module(self, values):
+        """Users may only read instances (security/ir.access.csv): what changes, the module writes, after the
+        checks in the action that asked for it."""
+        return self.sudo().write(values)
+
     def _run(self, action, title, body=None):
+        self.check_access("read")
         for instance in self:
             job = instance.server_id._call("POST", f"{instance._path()}/actions/{action}", body=body or {})
-            instance.write({"status": "busy", "last_job_id": (job or {}).get("id")})
+            instance._write_as_module({"status": "busy", "last_job_id": (job or {}).get("id")})
             instance.message_post(body=_("%(title)s requested by %(user)s.", title=title, user=self.env.user.name))
         return True
 
     def action_open(self):
         self.ensure_one()
-        if not self.url:
+        if not (self.url or "").startswith(("https://", "http://")):
             raise UserError(_("This instance has no link yet."))
         return {"type": "ir.actions.act_url", "url": self.url, "target": "new"}
 
@@ -99,7 +106,10 @@ class SudooInstance(models.Model):
         """Keep the instance one default lifetime longer."""
         self._check_manager()
         for instance in self:
-            days = instance.lifetime_days + (instance.server_id.default_lifetime_days or 14)
+            server = instance.server_id
+            days = instance.lifetime_days + (server.default_lifetime_days or 14)
+            if server.max_lifetime_days:
+                days = min(days, server.max_lifetime_days)
             data = instance.server_id._call("PATCH", instance._path(), body={"delete_after_days": days})
             instance._apply(data or {})
             instance.message_post(body=_("Lifetime extended to %s days.", days))
@@ -109,7 +119,7 @@ class SudooInstance(models.Model):
         self._check_manager()
         for instance in self:
             instance.server_id._call("DELETE", instance._path(), body={"confirm": instance.name})
-            instance.write({"status": "busy"})
+            instance._write_as_module({"status": "busy"})
             instance.message_post(body=_("Deletion requested by %s; a backup is taken first.", self.env.user.name))
         return True
 
@@ -126,7 +136,7 @@ class SudooInstance(models.Model):
         odoo, git, settings = data.get("odoo") or {}, data.get("git") or {}, data.get("settings") or {}
         values = {
             "status": data.get("status") if data.get("status") in dict(STATUSES) else "unknown",
-            "url": data.get("url") or False,
+            "url": data.get("url") if str(data.get("url") or "").startswith(("https://", "http://")) else False,
             "odoo_version": odoo.get("version") or False,
             "edition": odoo.get("edition") or False,
             "source": data.get("source") or False,
@@ -137,7 +147,7 @@ class SudooInstance(models.Model):
             "panel_created_by": data.get("created_by") or False,
         }
         was_creating = self.status == "creating"
-        self.write({key: value for key, value in values.items() if self[key] != value})
+        self._write_as_module({key: value for key, value in values.items() if self[key] != value})
         if was_creating and self.status in READY:
             self._notify_ready()
 
@@ -157,12 +167,12 @@ class SudooInstance(models.Model):
             known = {instance.name: instance for instance in self.with_context(active_test=False).search(
                 [("server_id", "=", server.id)])}
             for data in listed:
-                instance = known.pop(data["name"], None) or self.create({"name": data["name"], "server_id": server.id,
+                instance = known.pop(data["name"], None) or self.sudo().create({"name": data["name"], "server_id": server.id,
                                                                           "user_id": False, "status": "unknown"})
                 instance._apply(data)
             for gone in known.values():
                 if gone.status != "deleted":
-                    gone.write({"status": "deleted", "url": False})
+                    gone._write_as_module({"status": "deleted", "url": False})
 
     @api.model
     def _cron_sync(self):

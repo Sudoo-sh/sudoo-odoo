@@ -1,12 +1,19 @@
 # Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details.
+from urllib.parse import urlsplit
+
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 from ..services.panel_client import PanelClient, PanelError
 
+LOCAL_HOSTS = ("localhost", "127.0.0.1", "::1")
+
 
 class SudooServer(models.Model):
-    """A Sudoo.sh panel this company uses. Its API token and signing secret are visible to managers only."""
+    """A Sudoo.sh panel this company uses, and what its Odoo users may create on it.
+
+    The API token and the signing secret are readable by Sudoo.sh administrators only; the module reads them with
+    sudo() to sign requests and never shows them to anyone else."""
 
     _name = "sudoo.server"
     _description = "Sudoo.sh panel"
@@ -19,23 +26,50 @@ class SudooServer(models.Model):
     token = fields.Char(string="API token", groups="sudoo_base.group_sudoo_manager", copy=False)
     secret = fields.Char(string="Signing secret", groups="sudoo_base.group_sudoo_manager", copy=False)
     company_id = fields.Many2one("res.company", default=lambda self: self.env.company)
-    default_version = fields.Char(string="Default Odoo version", default="19.0")
-    default_lifetime_days = fields.Integer(string="Default lifetime (days)", default=14,
-                                           help="0 keeps instances until they are deleted by hand.")
     instance_ids = fields.One2many("sudoo.instance", "server_id")
     instance_count = fields.Integer(compute="_compute_instance_count")
+
+    # what the administrator allows Odoo users to create on this panel
+    version_ids = fields.One2many("sudoo.server.version", "server_id", string="Odoo versions")
+    allow_plain = fields.Boolean(string="Plain Odoo", default=True)
+    allow_repository = fields.Boolean(string="From a GitHub repository", default=True)
+    allow_enterprise = fields.Boolean(string="Enterprise edition", default=True,
+                                      help="Only for versions where the panel has Enterprise.")
+    allow_demo_data = fields.Boolean(string="Demo data", default=True)
+    default_lifetime_days = fields.Integer(string="Default lifetime (days)", default=14)
+    max_lifetime_days = fields.Integer(string="Longest lifetime (days)", default=90,
+                                       help="0: no limit, and instances may be kept until deleted by hand.")
+    max_instances_per_user = fields.Integer(string="Instances per person", default=0,
+                                            help="How many instances one Odoo user may have at a time; 0: no limit. "
+                                                 "The panel's own limits apply too.")
 
     @api.depends("instance_ids")
     def _compute_instance_count(self):
         for server in self:
             server.instance_count = len(server.instance_ids)
 
+    @api.constrains("url")
+    def _check_url(self):
+        for server in self:
+            parts = urlsplit(server.url or "")
+            local = parts.hostname in LOCAL_HOSTS
+            if not parts.hostname or parts.scheme not in ("https", "http") or (parts.scheme == "http" and not local):
+                raise ValidationError(_("The panel address must start with https:// (http:// only for localhost)."))
+
+    @api.constrains("default_lifetime_days", "max_lifetime_days", "max_instances_per_user")
+    def _check_limits(self):
+        for server in self:
+            if min(server.default_lifetime_days, server.max_lifetime_days, server.max_instances_per_user) < 0:
+                raise ValidationError(_("Lifetimes and limits cannot be negative."))
+            if server.max_lifetime_days and not 0 < server.default_lifetime_days <= server.max_lifetime_days:
+                raise ValidationError(_("The default lifetime must be between 1 day and the longest lifetime."))
+
     # ------------------------------------------------------------------ connection
 
     def _client(self):
         """A signed client for this panel, acting for the current Odoo user."""
         self.ensure_one()
-        server = self.sudo()  # the token is read by the module, never shown to users without the manager group
+        server = self.sudo()
         return PanelClient(server.url, server.token, server.secret, acting_for=self.env.user.login)
 
     def _call(self, method, path, **kwargs):
@@ -44,10 +78,23 @@ class SudooServer(models.Model):
         except PanelError as error:
             raise UserError(str(error)) from error
 
+    def _refresh_versions(self):
+        """Read the Odoo versions the panel offers: new ones are added (allowed), gone ones removed."""
+        for server in self:
+            offered = {v["version"]: bool(v.get("enterprise")) for v in server._call("GET", "/versions") or []}
+            lines = server.sudo().version_ids
+            for line in lines:
+                if line.name in offered:
+                    line.enterprise_available = offered.pop(line.name)
+                else:
+                    line.unlink()
+            for version, enterprise in offered.items():
+                lines.create({"server_id": server.id, "name": version, "enterprise_available": enterprise})
+
     def action_test_connection(self):
         self.ensure_one()
-        versions = self._call("GET", "/versions") or []
-        names = ", ".join(v["version"] for v in versions) or _("none")
+        self._refresh_versions()
+        names = ", ".join(self.version_ids.mapped("name")) or _("none")
         return {
             "type": "ir.actions.client",
             "tag": "display_notification",
@@ -55,6 +102,7 @@ class SudooServer(models.Model):
         }
 
     def action_sync(self):
+        self._refresh_versions()
         self.env["sudoo.instance"]._sync_servers(self)
         return True
 
@@ -63,3 +111,18 @@ class SudooServer(models.Model):
         action = self.env["ir.actions.act_window"]._for_xml_id("sudoo_base.action_sudoo_instance")
         action["domain"] = [("server_id", "=", self.id)]
         return action
+
+
+class SudooServerVersion(models.Model):
+    """An Odoo version a panel offers, and whether this company's users may create instances of it."""
+
+    _name = "sudoo.server.version"
+    _description = "Odoo version offered by a Sudoo.sh panel"
+    _order = "server_id, name desc"
+
+    name = fields.Char(string="Version", required=True, readonly=True)
+    server_id = fields.Many2one("sudoo.server", required=True, ondelete="cascade", index=True)
+    enterprise_available = fields.Boolean(string="Enterprise on the panel", readonly=True)
+    allowed = fields.Boolean(default=True)
+
+    _version_unique = models.Constraint("unique(server_id, name)", "Each version is listed once per panel.")

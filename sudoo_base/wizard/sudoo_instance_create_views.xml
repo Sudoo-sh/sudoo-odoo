@@ -6,28 +6,35 @@
         <field name="model">sudoo.instance.create</field>
         <field name="arch" type="xml">
             <form string="New instance">
+                <div class="alert alert-info mb-3" role="status" invisible="not policy_html">
+                    <field name="policy_html" readonly="1" nolabel="1"/>
+                </div>
                 <group>
                     <group>
-                        <field name="server_id" options="{'no_create': True}"/>
-                        <field name="source" widget="radio"/>
+                        <field name="server_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="allow_plain" invisible="1"/>
+                        <field name="allow_repository" invisible="1"/>
+                        <field name="allow_demo_data" invisible="1"/>
+                        <field name="enterprise_possible" invisible="1"/>
+                        <field name="source" widget="radio" invisible="not allow_plain or not allow_repository"/>
                         <field name="repository" invisible="source != 'repository'" required="source == 'repository'"
                                placeholder="https://github.com/acme/odoo-addons"/>
-                        <field name="branch" invisible="source != 'repository'"/>
+                        <field name="branch" invisible="source != 'repository'" required="source == 'repository'"/>
                         <field name="instance_name" placeholder="sales-demo"/>
                     </group>
                     <group>
-                        <field name="version" placeholder="19.0"/>
-                        <field name="edition"/>
+                        <field name="version_id" required="1" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="edition" widget="radio" invisible="not enterprise_possible"/>
                         <field name="lifetime_days"/>
-                        <field name="demo_data"/>
+                        <field name="demo_data" invisible="not allow_demo_data"/>
                         <field name="install_modules" invisible="source != 'repository'"/>
                         <field name="res_model" invisible="1"/>
                         <field name="res_id" invisible="1"/>
                     </group>
                 </group>
                 <footer>
-                    <button name="action_create" type="object" string="Create" class="btn-primary"/>
-                    <button special="cancel" string="Cancel"/>
+                    <button name="action_create" type="object" string="Create" class="btn-primary" data-hotkey="q"/>
+                    <button special="cancel" string="Cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>
