@@ -25,7 +25,7 @@
         <field name="name">sudoo.instance.form</field>
         <field name="model">sudoo.instance</field>
         <field name="arch" type="xml">
-            <form create="false" edit="false">
+            <form create="false" edit="false" delete="false">
                 <header>
                     <button name="action_open" type="object" string="Open" class="btn-primary" icon="fa-external-link"
                             invisible="not url or status not in ('online', 'paused')"/>

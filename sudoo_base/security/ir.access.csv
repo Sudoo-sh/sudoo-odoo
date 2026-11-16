@@ -1,8 +1,11 @@
 id,name,model_id,group_id/id,operation,domain
 access_sudoo_server_user,Sudoo.sh panels: users read,sudoo.server,sudoo_base.group_sudoo_user,r,
 access_sudoo_server_manager,Sudoo.sh panels: administrators,sudoo.server,sudoo_base.group_sudoo_manager,crud,
-access_sudoo_instance_user,Sudoo.sh instances: users,sudoo.instance,sudoo_base.group_sudoo_user,cru,
+access_sudoo_server_version_user,Sudoo.sh versions: users read,sudoo.server.version,sudoo_base.group_sudoo_user,r,
+access_sudoo_server_version_manager,Sudoo.sh versions: administrators,sudoo.server.version,sudoo_base.group_sudoo_manager,crud,
+access_sudoo_instance_user,Sudoo.sh instances: users read (the module writes them),sudoo.instance,sudoo_base.group_sudoo_user,r,
 access_sudoo_instance_manager,Sudoo.sh instances: administrators,sudoo.instance,sudoo_base.group_sudoo_manager,crud,
 access_sudoo_instance_create_user,Sudoo.sh new instance wizard,sudoo.instance.create,sudoo_base.group_sudoo_user,crud,
 sudoo_server_company_rule,Sudoo.sh panels: own companies,sudoo.server,,crud,"[('company_id', 'in', company_ids + [False])]"
+sudoo_server_version_company_rule,Sudoo.sh versions: own companies,sudoo.server.version,,crud,"[('server_id.company_id', 'in', company_ids + [False])]"
 sudoo_instance_company_rule,Sudoo.sh instances: own companies,sudoo.instance,,crud,"[('company_id', 'in', company_ids + [False])]"
