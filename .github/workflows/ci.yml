@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: ["19.0"]
+    branches: ["18.0"]
   pull_request:
 
 permissions:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   test:
-    name: Install and test on Odoo 19.0
+    name: Install and test on Odoo 18.0
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -24,9 +24,10 @@ jobs:
         # Helpdesk is part of Odoo Enterprise, so sudoo_helpdesk cannot be installed here
         run: |
           docker run --rm --network odoo -e HOST=db -e USER=odoo -e PASSWORD=odoo \
-            -v "$PWD":/mnt/extra-addons:ro odoo:19.0 \
+            -v "$PWD":/mnt/extra-addons:ro odoo:18.0 \
             odoo -d test -i sudoo_base,sudoo_crm,sudoo_project \
             --test-enable --test-tags /sudoo_base,/sudoo_crm,/sudoo_project --stop-after-init \
             2>&1 | tee odoo.log
-          ! grep -E "(ERROR|CRITICAL)" odoo.log
+          # only Odoo's own log lines: the stock mail module's description prints a docutils "(ERROR/3)" line
+          ! grep -E "^[0-9-]+ [0-9:,]+ [0-9]+ (ERROR|CRITICAL) " odoo.log
           grep -E "0 failed, 0 error\(s\)" odoo.log

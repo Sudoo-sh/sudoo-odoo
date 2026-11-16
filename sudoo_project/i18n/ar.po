@@ -1,0 +1,82 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sudoo_project
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-16 10:21+0000\n"
+"PO-Revision-Date: 2026-11-16 10:21+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#. module: sudoo_project
+#: model:ir.module.module,summary:base.module_sudoo_project
+msgid ""
+"A Test instance button on tasks: a live Odoo of the task branch for review"
+msgstr "زر «نسخة اختبار» في المهام: نسخة Odoo حية من فرع المهمة للمراجعة"
+
+#. module: sudoo_project
+#: model:ir.model.fields,field_description:sudoo_project.field_project_task__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: sudoo_project
+#: model:ir.model.fields,field_description:sudoo_project.field_project_task__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: sudoo_project
+#: model:ir.model.fields,field_description:sudoo_project.field_project_task__sudoo_instance_count
+#: model_terms:ir.ui.view,arch_db:sudoo_project.view_form_sudoo
+msgid "Instances"
+msgstr "النسخ"
+
+#. module: sudoo_project
+#: model:ir.model.fields,field_description:sudoo_project.field_project_task__sudoo_instance_ids
+msgid "Sudoo.sh instances"
+msgstr "نسخ Sudoo.sh"
+
+#. module: sudoo_project
+#: model:ir.module.module,shortdesc:base.module_sudoo_project
+msgid "Sudoo.sh – Project Test Instances"
+msgstr "Sudoo.sh – نسخ الاختبار في المشروع"
+
+#. module: sudoo_project
+#: model:ir.model,name:sudoo_project.model_project_task
+msgid "Task"
+msgstr "المهمة"
+
+#. module: sudoo_project
+#: model_terms:ir.ui.view,arch_db:sudoo_project.view_form_sudoo
+msgid "Test instance"
+msgstr "نسخة اختبار"
+
+#. module: sudoo_project
+#: model:ir.model.fields,help:sudoo_project.field_project_task__display_name
+msgid ""
+"Use these keywords in the title to set new tasks:\n"
+"\n"
+"            #tags Set tags on the task\n"
+"            @user Assign the task to a user\n"
+"            ! Set the task a medium priority\n"
+"            !! Set the task a high priority\n"
+"            !!! Set the task a urgent priority\n"
+"\n"
+"            Make sure to use the right format and order e.g. Improve the configuration screen #feature #v16 @Mitchell !"
+msgstr ""
+"استخدم هذه الكلمات المفتاحية في العنوان لتعيين مهام جديدة:\n"
+"\n"
+"            #tags لتعيين علامات تصنيف للمهمة\n"
+"            @user لإسناد المهمة إلى أحد المستخدمين\n"
+"            ! لتعيين أولوية متوسطة للمهمة\n"
+"            !! لتعيين أولوية عالية للمهمة\n"
+"            !!! لتعيين أولوية عاجلة للمهمة\n"
+"\n"
+"            تأكد من استخدام التنسيق والترتيب الصحيحين، على سبيل المثال: تحسين شاشة التهيئة #feature #v16 @Mitchell !"
