@@ -10,14 +10,25 @@ the path and the body. Answers are {"data": ..., "meta": ...}; errors are proble
 import hashlib
 import hmac
 import json
+import re
 import secrets
 import time
-from urllib.parse import urlencode, urlsplit
+from urllib.parse import quote, urlencode, urlsplit
 
 import requests
 
 API_PREFIX = "/api/v1"
 TIMEOUT_SECONDS = 20
+MAX_ANSWER_BYTES = 2 * 1024 * 1024  # the largest answer (500 instances) is far smaller
+INSTANCE_NAME_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,30}$")  # the panel's own rule for instance names
+ACTING_FOR_RE = re.compile(r"[^A-Za-z0-9._@+-]")  # what the panel accepts in X-Sudoo-Acting-For
+
+
+def instance_path(name):
+    """/instances/<name>, refusing anything that is not an instance name (it becomes part of the address)."""
+    if not INSTANCE_NAME_RE.match(name or ""):
+        raise PanelError("This is not a valid instance name.")
+    return f"/instances/{quote(name)}"
 
 
 class PanelError(Exception):
@@ -35,7 +46,8 @@ class PanelClient:
         self.url = (url or "").rstrip("/")
         self.token = token or ""
         self.secret = secret or ""
-        self.acting_for = acting_for  # the Odoo user behind the call, for the panel's audit log
+        # the Odoo user behind the call: signed, shown in the panel's audit log and counted in its per-person limits
+        self.acting_for = ACTING_FOR_RE.sub("", acting_for or "")[:120] or None
 
     # ------------------------------------------------------------------ requests
 
@@ -60,14 +72,21 @@ class PanelClient:
         headers = self._signed_headers(method, full_path, raw)
         if body is not None:
             headers["Content-Type"] = "application/json"
+        host = urlsplit(self.url).netloc
         try:
+            # never follow a redirect: the signed request is meant for this panel only
             answer = requests.request(method, self.url + full_path, data=raw or None, headers=headers,
-                                      timeout=TIMEOUT_SECONDS)
+                                      timeout=TIMEOUT_SECONDS, allow_redirects=False, stream=True)
+            content = answer.raw.read(MAX_ANSWER_BYTES + 1, decode_content=True) if answer.raw else b""
         except requests.RequestException as error:
-            raise PanelError(f"The panel at {urlsplit(self.url).netloc} could not be reached ({error.__class__.__name__}).") from error
+            raise PanelError(f"The panel at {host} could not be reached ({error.__class__.__name__}).") from error
+        if len(content) > MAX_ANSWER_BYTES:
+            raise PanelError(f"The panel at {host} sent an answer that is too large.")
+        if 300 <= answer.status_code < 400:
+            raise PanelError(f"The panel at {host} answered with a redirect. Check the panel address.")
         if answer.status_code == 204:
             return None
-        payload = self._json(answer)
+        payload = self._json(content)
         if answer.status_code >= 400:
             detail = payload.get("detail") or payload.get("title") or answer.reason
             raise PanelError(f"The panel refused this: {detail}", answer.status_code)
@@ -78,7 +97,10 @@ class PanelClient:
     def _signed_headers(self, method, full_path, raw):
         timestamp = str(int(time.time()))
         nonce = secrets.token_urlsafe(24)
-        text = "\n".join((timestamp, nonce, method.upper(), full_path, hashlib.sha256(raw).hexdigest()))
+        lines = [timestamp, nonce, method.upper(), full_path, hashlib.sha256(raw).hexdigest()]
+        if self.acting_for:
+            lines.append(self.acting_for)  # signed too, so nobody can change who the call is made for
+        text = "\n".join(lines)
         signature = hmac.new(self.secret.encode(), text.encode(), hashlib.sha256).hexdigest()
         headers = {
             "Authorization": f"Bearer {self.token}",
@@ -92,9 +114,9 @@ class PanelClient:
         return headers
 
     @staticmethod
-    def _json(answer):
+    def _json(content):
         try:
-            payload = answer.json()
+            payload = json.loads(content or b"{}")
         except ValueError:
             return {}
         return payload if isinstance(payload, dict) else {}

@@ -26,6 +26,8 @@ class SudooServer(models.Model):
     token = fields.Char(string="API token", groups="sudoo_base.group_sudoo_manager", copy=False)
     secret = fields.Char(string="Signing secret", groups="sudoo_base.group_sudoo_manager", copy=False)
     company_id = fields.Many2one("res.company", default=lambda self: self.env.company)
+    acting_for_unsupported = fields.Boolean(readonly=True, copy=False, help="Set by the module when the panel is "
+                                            "older than the signed X-Sudoo-Acting-For header.")
     instance_ids = fields.One2many("sudoo.instance", "server_id")
     instance_count = fields.Integer(compute="_compute_instance_count")
 
@@ -48,6 +50,10 @@ class SudooServer(models.Model):
         for server in self:
             server.instance_count = len(server.instance_ids)
 
+    @api.onchange("url", "token", "secret")
+    def _onchange_credentials(self):
+        self.acting_for_unsupported = False  # a new panel or token: try the signed acting-for line again
+
     @api.constrains("url")
     def _check_url(self):
         for server in self:
@@ -67,14 +73,23 @@ class SudooServer(models.Model):
     # ------------------------------------------------------------------ connection
 
     def _client(self):
-        """A signed client for this panel, acting for the current Odoo user."""
+        """A signed client for this panel, acting for the current Odoo user (unless the panel is too old for it)."""
         self.ensure_one()
         server = self.sudo()
-        return PanelClient(server.url, server.token, server.secret, acting_for=self.env.user.login)
+        acting_for = None if server.acting_for_unsupported else self.env.user.login
+        return PanelClient(server.url, server.token, server.secret, acting_for=acting_for)
 
     def _call(self, method, path, **kwargs):
         try:
-            return self._client().request(method, path, **kwargs)
+            try:
+                return self._client().request(method, path, **kwargs)
+            except PanelError as error:
+                if error.status != 401 or self.sudo().acting_for_unsupported:
+                    raise
+                # a panel from before the signed acting-for line refuses the signature: once without it, and remember
+                answer = PanelClient(self.sudo().url, self.sudo().token, self.sudo().secret).request(method, path, **kwargs)
+                self.sudo().acting_for_unsupported = True
+                return answer
         except PanelError as error:
             raise UserError(str(error)) from error
 
