@@ -2,6 +2,13 @@
 
 All notable changes to the Sudoo.sh apps for Odoo. Versions follow Odoo's scheme: `<Odoo series>.<major>.<minor>.<patch>`.
 
+## [Unreleased]
+
+### Changed
+
+- Formatting setup: an `.editorconfig` for every editor, plus the existing black and ruff checks run unchanged; no
+  file was reformatted. No behaviour change.
+
 ## 1.0.0 (2026-11-16)
 
 First release, for Odoo 20.0, 19.0, 18.0 and 17.0 (`<series>.1.0.0`). Use a panel token with the **Instances** scope.
