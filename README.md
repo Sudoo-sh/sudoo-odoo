@@ -144,6 +144,8 @@ pip install pre-commit
 pre-commit run --all-files
 ```
 
+`.editorconfig` sets the basics for editors (UTF-8, LF, final newline, indent).
+
 ## Versions
 
 One branch per Odoo version: `20.0`, `19.0`, `18.0` and `17.0`. Use the branch of the Odoo version your company
