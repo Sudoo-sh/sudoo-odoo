@@ -36,6 +36,7 @@ class PanelError(Exception):
     sudoo.server._panel_message turns them into the user's language. str() is the English message."""
 
     def __init__(self, message, status=None, kind=None, **values):
+        """Keep the HTTP status (None when no answer came back), the problem's kind and its message values."""
         super().__init__(message)
         self.status = status
         self.kind = kind
@@ -46,6 +47,9 @@ class PanelClient:
     """A signed connection to one panel: PanelClient(url, token, secret).get("/instances")."""
 
     def __init__(self, url, token, secret, acting_for=None):
+        """Remember the panel and its credentials. `acting_for` is the Odoo login the calls are made for; it is
+        cut down to the characters the panel accepts (at most 120), or None to leave the header out.
+        """
         self.url = (url or "").rstrip("/")
         self.token = token or ""
         self.secret = secret or ""
@@ -55,15 +59,19 @@ class PanelClient:
     # ------------------------------------------------------------------ requests
 
     def get(self, path, params=None):
+        """GET path with query `params`; returns the answer's data (see request)."""
         return self.request("GET", path, params=params)
 
     def post(self, path, body=None):
+        """POST a JSON body (an empty object when None); returns the answer's data."""
         return self.request("POST", path, body=body or {})
 
     def patch(self, path, body):
+        """PATCH a JSON body; returns the answer's data."""
         return self.request("PATCH", path, body=body)
 
     def delete(self, path, body=None):
+        """DELETE, with an optional JSON body; returns the answer's data."""
         return self.request("DELETE", path, body=body)
 
     def request(self, method, path, params=None, body=None):
@@ -112,6 +120,12 @@ class PanelClient:
     # ------------------------------------------------------------------ signing
 
     def _signed_headers(self, method, full_path, raw):
+        """The headers that authenticate one request.
+
+        Signs timestamp, nonce, method, path with query, SHA-256 of the body and, when set, the acting-for
+        login, one per line, with HMAC-SHA256 and the signing secret. The timestamp and the one-time nonce
+        let the panel refuse a captured request sent again (docs/PANEL_API.md, "Signing a request").
+        """
         timestamp = str(int(time.time()))
         nonce = secrets.token_urlsafe(24)
         lines = [timestamp, nonce, method.upper(), full_path, hashlib.sha256(raw).hexdigest()]
@@ -132,6 +146,7 @@ class PanelClient:
 
     @staticmethod
     def _json(content):
+        """The answer as a dict; {} when it is empty, not JSON or not an object."""
         try:
             payload = json.loads(content or b"{}")
         except ValueError:

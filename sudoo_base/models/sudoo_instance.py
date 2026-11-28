@@ -1,4 +1,10 @@
 # Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details.
+"""Instances on a Sudoo.sh panel (sudoo.instance), and the scheduled sync that keeps them in step.
+
+Users only read these records. Every change goes through the panel first; the module then writes what the
+panel answered (see SudooInstance._write_as_module).
+"""
+
 import logging
 from datetime import datetime, timezone
 
@@ -65,6 +71,10 @@ class SudooInstance(models.Model):
     # ------------------------------------------------------------------ panel calls
 
     def _path(self):
+        """The instance's API path (/instances/<name>).
+
+        Raises UserError, in the user's language, when the stored name is not a valid instance name.
+        """
         self.ensure_one()
         try:
             return instance_path(self.name)
@@ -77,6 +87,12 @@ class SudooInstance(models.Model):
         return self.sudo().write(values)
 
     def _run(self, action, title, body=None):
+        """Ask the panel to run an action (start, pause...) on each instance.
+
+        Marks each instance busy, keeps the panel's job id and posts who asked in the chatter. The panel
+        does the work in the background; the next sync shows the result. Raises AccessError without read
+        access and UserError when the panel refuses. Returns True.
+        """
         self.check_access("read")
         for instance in self:
             job = instance.server_id._call("POST", f"{instance._path()}/actions/{action}", body=body or {})
@@ -85,24 +101,30 @@ class SudooInstance(models.Model):
         return True
 
     def action_open(self):
+        """Open the instance's link in a new tab. Raises UserError when there is no http(s) link yet."""
         self.ensure_one()
         if not (self.url or "").startswith(("https://", "http://")):
             raise UserError(_("This instance has no link yet."))
         return {"type": "ir.actions.act_url", "url": self.url, "target": "new"}
 
     def action_start(self):
+        """Button: start the instance on the panel (see _run)."""
         return self._run("start", _("Start"))
 
     def action_pause(self):
+        """Button: pause the instance on the panel (see _run)."""
         return self._run("pause", _("Pause"))
 
     def action_restart(self):
+        """Button: restart the instance on the panel (see _run)."""
         return self._run("restart", _("Restart"))
 
     def action_backup(self):
+        """Button: take a backup of the instance on the panel (see _run)."""
         return self._run("backup", _("Back up"))
 
     def _check_manager(self):
+        """Raise AccessError unless the user is a Sudoo.sh administrator."""
         if not self.env.user.has_group("sudoo_base.group_sudoo_manager"):
             raise AccessError(_("Only Sudoo.sh administrators can do this."))
 
@@ -120,6 +142,11 @@ class SudooInstance(models.Model):
         return True
 
     def action_delete(self):
+        """Button: ask the panel to delete each instance (administrators only).
+
+        The panel takes a backup first. The record is marked busy; the sync marks it deleted once the panel
+        no longer lists it. Raises AccessError for non-administrators and UserError when the panel refuses.
+        """
         self._check_manager()
         for instance in self:
             instance.server_id._call("DELETE", instance._path(), body={"confirm": instance.name})
@@ -128,6 +155,7 @@ class SudooInstance(models.Model):
         return True
 
     def action_open_record(self):
+        """Open the record (ticket, opportunity, task...) this instance was made for."""
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
@@ -171,6 +199,12 @@ class SudooInstance(models.Model):
 
     @api.model
     def _sync_servers(self, servers):
+        """Bring the instance records of `servers` in step with what each panel lists.
+
+        Creates records for instances made outside Odoo, updates known ones (see _apply) and marks the ones
+        the panel no longer lists as deleted. Entries whose name is not a valid instance name are skipped.
+        Raises UserError when a panel cannot be read.
+        """
         for server in servers:
             listed = server._call("GET", "/instances", params={"limit": 500}) or []
             known = {
@@ -190,6 +224,9 @@ class SudooInstance(models.Model):
 
     @api.model
     def _cron_sync(self):
+        """Scheduled action (data/ir_cron.xml): sync every panel. A panel that fails is logged and skipped, so one
+        unreachable panel does not stop the others.
+        """
         for server in self.env["sudoo.server"].search([]):
             try:
                 self._sync_servers(server)

@@ -20,3 +20,10 @@ section-order = ["future", "standard-library", "third-party", "first-party", "lo
 [tool.ruff.lint.per-file-ignores]
 "__manifest__.py" = ["B018"]  # a manifest is a bare dictionary
 "__init__.py" = ["F401"]  # imports that load the module's files
+
+[tool.interrogate]
+# Docstring coverage, checked by pre-commit (see CONTRIBUTING.md, "Documentation rule").
+fail-under = 90
+verbose = 1
+# A manifest is read by Odoo with ast.literal_eval: it must stay a bare dictionary, so it cannot have a docstring.
+exclude = ["*/__manifest__.py"]

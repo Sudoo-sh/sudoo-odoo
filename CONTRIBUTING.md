@@ -9,7 +9,8 @@ read them, report problems and propose improvements. Only Sudoo.sh publishes the
 2. [Reporting a problem](#reporting-a-problem)
 3. [Proposing a change](#proposing-a-change)
 4. [Code rules](#code-rules)
-5. [Your contribution's licence](#your-contributions-licence)
+5. [Documentation rule](#documentation-rule)
+6. [Your contribution's licence](#your-contributions-licence)
 
 ## What you may do
 
@@ -48,9 +49,21 @@ what happened. Security problems: never in an issue; follow the
   (XML: the same text in a comment).
 - Follow Odoo's guidelines: `invisible="..."` expressions (no `attrs`), translatable strings with `_()`, no SQL
   where the ORM does it, access rules for every new model.
-- Style: `pre-commit run --all-files` must pass (black, ruff, XML and YAML checks; CI runs it too).
+- Style: `pre-commit run --all-files` must pass (black, ruff, interrogate, XML and YAML checks; CI runs it too).
 - Tests: `odoo -d test -i <module> --test-enable --test-tags /<module> --stop-after-init` must pass.
 - Plain, direct wording in labels and messages; say what the user can do.
+
+## Documentation rule
+
+Every file, class and public method has a docstring; so does any private helper whose job is not obvious from its
+name. Say what it does, what it takes and returns, what it raises and what it changes (records written, chatter
+messages, calls to the panel). Comments explain why the code does something, not what it does.
+
+- Python files: the docstring goes right after the licence header line.
+- `__manifest__.py` is the exception: Odoo reads it as a bare dictionary, so it keeps only the header comment.
+- `pre-commit run --all-files` checks the coverage with interrogate and fails under 90%
+  (settings in `pyproject.toml`, `[tool.interrogate]`).
+- Keep the wording plain and short, like the rest of the code.
 
 ## Your contribution's licence
 
