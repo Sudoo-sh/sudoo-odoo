@@ -1,4 +1,8 @@
 # Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details.
+"""The New instance wizard (sudoo.instance.create): offers only what the administrator allows, checks it again
+on Create, then asks the panel for the instance.
+"""
+
 import re
 
 from markupsafe import Markup, escape
@@ -47,6 +51,9 @@ class SudooInstanceCreate(models.TransientModel):
 
     @api.onchange("server_id")
     def _onchange_server_id(self):
+        """Fit the form to the chosen panel: read its versions when none are known, and replace any source,
+        version, lifetime or demo-data choice it does not allow with an allowed one.
+        """
         server = self.server_id
         if not server:
             return
@@ -64,10 +71,12 @@ class SudooInstanceCreate(models.TransientModel):
 
     @api.onchange("version_id")
     def _onchange_version_id(self):
+        """Fall back to Community when the chosen version cannot have Enterprise."""
         if self.edition == "enterprise" and not self.enterprise_possible:
             self.edition = "community"
 
     def _allowed_sources(self):
+        """The sources (plain, repository) the panel's administrator allows, in form order."""
         server = self.server_id
         return [
             source
@@ -77,6 +86,7 @@ class SudooInstanceCreate(models.TransientModel):
 
     @api.depends("server_id", "version_id")
     def _compute_policy(self):
+        """Whether Enterprise can be chosen, and the summary of the rules shown on the form."""
         for wizard in self:
             server = wizard.server_id
             wizard.enterprise_possible = bool(server.allow_enterprise and wizard.version_id.enterprise_available)
@@ -131,6 +141,7 @@ class SudooInstanceCreate(models.TransientModel):
         return ""
 
     def _own_open_domain(self):
+        """The user's instances on this panel that count toward the per-person limit (all but deleted ones)."""
         return [
             ("server_id", "=", self.server_id.id),
             ("user_id", "=", self.env.user.id),
@@ -179,6 +190,9 @@ class SudooInstanceCreate(models.TransientModel):
     # ------------------------------------------------------------------ creating
 
     def _panel_body(self):
+        """The JSON body of POST /instances. The name is cut to the characters and length the panel accepts;
+        repository fields are sent only for a repository instance.
+        """
         self.ensure_one()
         body = {
             "version": self.version_id.name,
@@ -198,6 +212,12 @@ class SudooInstanceCreate(models.TransientModel):
         return body
 
     def action_create(self):
+        """Button: check the rules, ask the panel for the instance and open its new record.
+
+        The record is created with sudo() for the user who asked (users only read instances), in the
+        creating status; the sync fills in the link later. Raises AccessError or UserError when a rule is
+        broken, and UserError when the panel refuses.
+        """
         self.ensure_one()
         self._check_policy()
         job = self.server_id._call("POST", "/instances", body=self._panel_body()) or {}

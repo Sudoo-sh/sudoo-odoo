@@ -31,7 +31,8 @@
 3. [Connecting your panel](#connecting-your-panel)
 4. [Using it](#using-it)
 5. [Adding instances to your own models](#adding-instances-to-your-own-models)
-6. [Versions](#versions)
+6. [How this code is organised](#how-this-code-is-organised)
+7. [Versions](#versions)
 
 ## The apps
 
@@ -134,10 +135,26 @@ built exactly this way; read them as examples.
 Your own module may use any licence compatible with the Odoo Proprietary License (LGPL, MIT or proprietary), as
 long as it does not copy code from these modules.
 
+## How this code is organised
+
+| Path | What lives there |
+| :--- | :--- |
+| `sudoo_base/` | The Instance Manager, needed by every other app |
+| `sudoo_base/models/` | `sudoo.server` (a panel and what users may create on it), `sudoo.instance` (an instance and the scheduled sync), `sudoo.instance.mixin` (what other models inherit) |
+| `sudoo_base/services/panel_client.py` | The only code that talks to a panel: signs each request and turns refusals into `PanelError` |
+| `sudoo_base/wizard/` | The **New instance** wizard (`sudoo.instance.create`) and its form |
+| `sudoo_base/views/`, `security/`, `data/` | Forms, lists and menus; groups and access rules; the scheduled sync |
+| `sudoo_base/tests/` | Tests, run by Odoo with `--test-enable`; the panel is faked, no network is used |
+| `sudoo_crm/`, `sudoo_helpdesk/`, `sudoo_project/` | One small app each: a model that inherits the mixin, and its buttons in `views/views.xml` |
+| `*/i18n/`, `*/static/description/` | Translations (Arabic); the Odoo Apps store page and images |
+| `docs/` | User manual, developer guide and their PDFs |
+
+Each Python file starts with a docstring that says what it holds; read those for the details.
+
 ## Code style
 
-The code is formatted with black and checked with ruff (line length 120), and XML and YAML files are checked, on
-every push and pull request. Run the same checks before you commit:
+The code is formatted with black and checked with ruff (line length 120), docstring coverage is checked with interrogate (at least
+90%), and XML and YAML files are checked, on every push and pull request. Run the same checks before you commit:
 
 ```bash
 pip install pre-commit

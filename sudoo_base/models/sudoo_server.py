@@ -1,4 +1,10 @@
 # Part of Sudoo.sh. Proprietary: see the LICENSE file for full copyright and licensing details.
+"""Sudoo.sh panels (sudoo.server) and the Odoo versions they offer (sudoo.server.version).
+
+A panel record holds the address, the API token and the signing secret, and the rules for what this
+company's users may create there. Models call the panel only through SudooServer._call.
+"""
+
 from urllib.parse import urlsplit
 
 from odoo import _, api, fields, models
@@ -56,15 +62,20 @@ class SudooServer(models.Model):
 
     @api.depends("instance_ids")
     def _compute_instance_count(self):
+        """How many instance records each panel has, for the smart button."""
         for server in self:
             server.instance_count = len(server.instance_ids)
 
     @api.onchange("url", "token", "secret")
     def _onchange_credentials(self):
+        """Clear acting_for_unsupported when the address, token or secret change."""
         self.acting_for_unsupported = False  # a new panel or token: try the signed acting-for line again
 
     @api.constrains("url")
     def _check_url(self):
+        """Refuse a panel address that is not https:// (http:// is accepted for localhost only), so tokens and
+        signatures never travel in clear text. Raises ValidationError.
+        """
         for server in self:
             parts = urlsplit(server.url or "")
             local = parts.hostname in LOCAL_HOSTS
@@ -73,6 +84,7 @@ class SudooServer(models.Model):
 
     @api.constrains("default_lifetime_days", "max_lifetime_days", "max_instances_per_user")
     def _check_limits(self):
+        """Refuse negative limits, and a default lifetime outside 1..longest lifetime. Raises ValidationError."""
         for server in self:
             if min(server.default_lifetime_days, server.max_lifetime_days, server.max_instances_per_user) < 0:
                 raise ValidationError(_("Lifetimes and limits cannot be negative."))
@@ -89,6 +101,12 @@ class SudooServer(models.Model):
         return PanelClient(server.url, server.token, server.secret, acting_for=acting_for)
 
     def _call(self, method, path, **kwargs):
+        """Send one signed request to this panel and return the answer's data (None for 204).
+
+        If the panel refuses the signed X-Sudoo-Acting-For line with 401, the request is sent once more
+        without it and acting_for_unsupported is set, so later calls skip it (panels from before that line).
+        Raises UserError, in the user's language, for any PanelError.
+        """
         try:
             try:
                 return self._client().request(method, path, **kwargs)
@@ -131,6 +149,7 @@ class SudooServer(models.Model):
                 lines.create({"server_id": server.id, "name": version, "enterprise_available": enterprise})
 
     def action_test_connection(self):
+        """Button: read the panel's Odoo versions and show them in a notification. Raises UserError on failure."""
         self.ensure_one()
         self._refresh_versions()
         names = ", ".join(self.version_ids.mapped("name")) or _("none")
@@ -141,11 +160,13 @@ class SudooServer(models.Model):
         }
 
     def action_sync(self):
+        """Button: refresh the offered versions and sync the instance list now."""
         self._refresh_versions()
         self.env["sudoo.instance"]._sync_servers(self)
         return True
 
     def action_view_instances(self):
+        """Smart button: the instance list, filtered to this panel."""
         self.ensure_one()
         action = self.env["ir.actions.act_window"]._for_xml_id("sudoo_base.action_sudoo_instance")
         action["domain"] = [("server_id", "=", self.id)]

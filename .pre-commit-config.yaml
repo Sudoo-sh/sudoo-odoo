@@ -22,3 +22,10 @@ repos:
     hooks:
       - id: ruff-check
         args: ["--fix"]
+  - repo: https://github.com/econchick/interrogate
+    rev: 1.7.0
+    hooks:
+      - id: interrogate
+        # docstring coverage of the whole repository (settings in pyproject.toml, [tool.interrogate])
+        args: ["--fail-under", "90", "."]
+        pass_filenames: false
